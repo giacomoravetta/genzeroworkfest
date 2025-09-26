@@ -1,0 +1,7 @@
+{
+  "name": "genzeroworkfest",
+  "compatibility_date": "2025-09-26",
+  "assets": {
+    "directory": "./dist",
+  },
+}
