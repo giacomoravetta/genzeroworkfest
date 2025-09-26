@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Info from "../components/Info.astro";
+import Logo from "../components/Logo.astro";
 import Background from "../components/Background.astro";
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
@@ -10,6 +10,18 @@ import Background from "../components/Background.astro";
 <Layout>
     <div class="relative">
         <Background />
-        <Info />
+        <div
+            class="absolute top-0 left-0 w-[100dvw] h-[100dvh] flex flex-col items-center"
+        >
+            <header class="flex flex-row justify-between p-10 w-full">
+                <div class="logo-wrapper w-[20dvw]"><Logo /></div>
+                <h2 class="w-[20dvw] text-4xl font-bold">18 Ottobre 2025</h2>
+            </header>
+            <h1
+                class="text-black h-full flex justify-center items-center text-4xl md:text-6xl font-bold text-center"
+            >
+                Stiamo arrivando!
+            </h1>
+        </div>
     </div>
 </Layout>
