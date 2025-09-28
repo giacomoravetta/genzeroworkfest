@@ -1,70 +1,43 @@
 ---
 import Logo from "./Logo.astro";
-import Island from "./Island.svelte";
+
+import FestivalSpirit from "./FestivalSpirit.svelte";
+import ProgramSchedule from "./ProgramSchedule.svelte";
 ---
 
 <div
-    class="absolute top-0 left-0 w-screen h-screen overflow-y-scroll flex flex-col items-center"
+    class="absolute top-0 left-0 w-screen h-[100dvh] flex flex-col items-center"
 >
+    <!-- Ghost header to reserve space in document flow -->
     <header
-        class="flex flex-col sm:flex-row justify-between items-center p-4 sm:p-6 lg:p-10 w-full gap-4 sm:gap-0"
+        class="h-fit md:h-[20dvh] flex flex-col sm:flex-row justify-between items-center p-4 sm:p-6 lg:p-10 w-full gap-4 sm:gap-0 flex-shrink-0"
     >
         <div class="logo-wrapper w-full sm:w-40 lg:w-[20dvw]"><Logo /></div>
         <h2
-            class="text-xl sm:text-2xl lg:text-4xl font-bold text-center sm:text-right sm:w-auto lg:w-[20dvw]"
+            class="text-xl sm:text-2xl lg:text-4xl font-sans font-bold text-center sm:text-right sm:w-auto lg:w-[20dvw]"
         >
             18 Ottobre 2025
         </h2>
     </header>
-    <main class="h-full w-full flex flex-col gap-3 sm:gap-4 lg:gap-5">
-        <section
-            class="flex flex-col lg:flex-row justify-between w-full h-auto lg:h-full lg:basis-1/2 px-4 sm:px-6 lg:px-10 gap-3 sm:gap-4 lg:gap-5"
+
+    <!-- Fixed header content -->
+    <div
+        class="fixed top-0 h-fit md:h-[20dvh] left-0 z-40 flex flex-col sm:flex-row justify-between items-center p-4 sm:p-6 lg:p-10 w-full gap-4 sm:gap-0"
+    >
+        <div class="logo-wrapper w-full sm:w-40 lg:w-[20dvw]"><Logo /></div>
+        <h2
+            class="text-xl sm:text-2xl lg:text-4xl font-sans font-bold text-center sm:text-right sm:w-auto lg:w-[20dvw]"
         >
-            <div class="flex w-full lg:basis-1/3 h-64 sm:h-80 lg:h-full">
-                <Island
-                    class="w-full h-full"
-                    title="Mattina"
-                    description="Vogliamo sfidare questa società che ci vuole solo produttori. Tra giochi, creatività e socializzazione, ci prendiamo il tempo di essere umani: non macchine, non numeri, non ingranaggi. Riprendiamoci il nostro tempo."
-                    text="06:00 - 12:00"
-                />
-            </div>
-            <div class="flex w-full lg:basis-1/3 h-64 sm:h-80 lg:h-full">
-                <Island
-                    class="w-full h-full"
-                    title="Pomeriggio"
-                    description="Il momento perfetto per workshops intensivi, sessioni collaborative e networking attivo. Energia e focus per portare avanti progetti concreti."
-                    text="12:00 - 18:00"
-                />
-            </div>
-            <div class="flex w-full lg:basis-1/3 h-64 sm:h-80 lg:h-full">
-                <Island
-                    class="w-full h-full"
-                    title="Sera"
-                    description="Finiamo la giornata come meglio sappiamo fare, mangiando e bevendo insieme. Musica dal vivo e Dj set, BeerPong e tanto altro!"
-                    text="18:00 - 24:00"
-                />
-            </div>
-        </section>
-        <section
-            class="w-full h-auto lg:h-full flex flex-col lg:flex-row lg:basis-1/2 px-4 sm:px-6 lg:px-10 pb-4 sm:pb-6 lg:pb-10 gap-3 sm:gap-4 lg:gap-5"
-        >
-            <div class="w-full h-64 sm:h-80 lg:h-full">
-                <Island
-                    class="w-full h-full"
-                    title="Sera"
-                    description="Finiamo la giornata come meglio sappiamo fare, mangiando e bevendo insieme. Musica dal vivo e Dj set, BeerPong e tanto altro!"
-                    text="18:00 - 24:00"
-                />
-            </div>
-            <div class="w-full h-64 sm:h-80 lg:h-full">
-                <Island
-                    class="w-full h-full"
-                    title="Sera"
-                    description="Finiamo la giornata come meglio sappiamo fare, mangiando e bevendo insieme. Musica dal vivo e Dj set, BeerPong e tanto altro!"
-                    text="18:00 - 24:00"
-                />
-            </div>
-        </section>
+            18 Ottobre 2025
+        </h2>
+    </div>
+
+    <main
+        class="w-full h-full flex flex-col gap-3 sm:gap-4 lg:gap-5 overflow-y-scroll"
+    >
+        <!-- Festival Spirit Section -->
+        <FestivalSpirit client:load />
+        <ProgramSchedule client:load />
     </main>
 
     <!-- WhatsApp Share Button -->
@@ -89,100 +62,101 @@ import Island from "./Island.svelte";
             </svg>
         </a>
     </div>
+
+    <script>
+        import { gsap } from "gsap";
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const logoWrapper = document.querySelector(".logo-wrapper");
+
+            if (logoWrapper) {
+                // Hover interactions
+                logoWrapper.addEventListener("mouseenter", function () {
+                    gsap.to(logoWrapper, {
+                        scale: 1.1,
+                        rotation: 2,
+                        duration: 0.3,
+                        ease: "power2.out",
+                    });
+                });
+
+                logoWrapper.addEventListener("mouseleave", function () {
+                    gsap.to(logoWrapper, {
+                        scale: 1,
+                        rotation: 0,
+                        duration: 0.5,
+                        ease: "power2.out",
+                    });
+                });
+            }
+
+            // WhatsApp button animations
+            const whatsappButton = document.querySelector(".whatsapp-button");
+
+            if (whatsappButton) {
+                // Entry animation
+                gsap.from(whatsappButton, {
+                    scale: 0,
+                    rotation: 180,
+                    duration: 0.8,
+                    ease: "back.out(1.7)",
+                    delay: 1,
+                });
+
+                // Floating animation
+                gsap.to(whatsappButton, {
+                    y: -10,
+                    duration: 2,
+                    ease: "power2.inOut",
+                    yoyo: true,
+                    repeat: -1,
+                });
+
+                // Hover animations
+                const whatsappLink =
+                    whatsappButton.querySelector(".whatsapp-link");
+
+                whatsappButton.addEventListener("mouseenter", function () {
+                    gsap.to(whatsappButton, {
+                        scale: 1.1,
+                        duration: 0.3,
+                        ease: "power2.out",
+                    });
+                });
+
+                whatsappButton.addEventListener("mouseleave", function () {
+                    gsap.to(whatsappButton, {
+                        scale: 1,
+                        duration: 0.3,
+                        ease: "power2.out",
+                    });
+                });
+            }
+        });
+    </script>
+
+    <style>
+        .logo-wrapper {
+            cursor: pointer;
+            transform-origin: center center;
+            transition: filter 0.3s ease;
+        }
+
+        .logo-wrapper:hover {
+            filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.2));
+        }
+
+        .whatsapp-button {
+            transform-origin: center center;
+        }
+
+        .whatsapp-link {
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+        }
+
+        .whatsapp-link:hover {
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.6);
+            transform: translateY(-2px);
+        }
+    </style>
 </div>
-
-<script>
-    import { gsap } from "gsap";
-
-    document.addEventListener("DOMContentLoaded", function () {
-        const logoWrapper = document.querySelector(".logo-wrapper");
-
-        if (logoWrapper) {
-            // Hover interactions
-            logoWrapper.addEventListener("mouseenter", function () {
-                gsap.to(logoWrapper, {
-                    scale: 1.1,
-                    rotation: 2,
-                    duration: 0.3,
-                    ease: "power2.out",
-                });
-            });
-
-            logoWrapper.addEventListener("mouseleave", function () {
-                gsap.to(logoWrapper, {
-                    scale: 1,
-                    rotation: 0,
-                    duration: 0.5,
-                    ease: "power2.out",
-                });
-            });
-        }
-
-        // WhatsApp button animations
-        const whatsappButton = document.querySelector(".whatsapp-button");
-
-        if (whatsappButton) {
-            // Entry animation
-            gsap.from(whatsappButton, {
-                scale: 0,
-                rotation: 180,
-                duration: 0.8,
-                ease: "back.out(1.7)",
-                delay: 1,
-            });
-
-            // Floating animation
-            gsap.to(whatsappButton, {
-                y: -10,
-                duration: 2,
-                ease: "power2.inOut",
-                yoyo: true,
-                repeat: -1,
-            });
-
-            // Hover animations
-            const whatsappLink = whatsappButton.querySelector(".whatsapp-link");
-
-            whatsappButton.addEventListener("mouseenter", function () {
-                gsap.to(whatsappButton, {
-                    scale: 1.1,
-                    duration: 0.3,
-                    ease: "power2.out",
-                });
-            });
-
-            whatsappButton.addEventListener("mouseleave", function () {
-                gsap.to(whatsappButton, {
-                    scale: 1,
-                    duration: 0.3,
-                    ease: "power2.out",
-                });
-            });
-        }
-    });
-</script>
-
-<style>
-    .logo-wrapper {
-        cursor: pointer;
-        transform-origin: center center;
-        transition: filter 0.3s ease;
-    }
-
-    .logo-wrapper:hover {
-        filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.2));
-    }
-
-    .whatsapp-button {
-        transform-origin: center center;
-    }
-
-    .whatsapp-link {
-        box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
-    }
-
-    .whatsapp-link:hover {
-        box-shadow: 0 6px 20px rgba(34, 197, 94, 0.6);
-        transform: translateY(-2px);
-    }
-</style>
