@@ -9,11 +9,11 @@
     // Manifesto lines - each element becomes a separate animated line
     const manifestoLines = [
         "Non solo un festival",
-        "ma uno spazio di resistenza creativa.",
+        "ma uno spazio di",
+        "resistenza creativa",
         "Dove il lavoro",
-        "incontra i diritti,",
-        "dove la legalità",
-        "sfida il malaffare,",
+        "incontra i diritti",
+        "e la legalità,",
         "dove giocare",
         "è rivoluzionario.",
     ];
@@ -49,99 +49,56 @@
 
         // Set initial state - lines start below and invisible
         gsap.set(lines, {
-            y: 80,
+            y: 100,
             opacity: 0,
             transformOrigin: "center bottom",
         });
 
-        // Create scroll-triggered animation with parent scroller
-        gsap.to(lines, {
+        // Create timeline for sequential animation
+        const tl = gsap.timeline({
+            paused: true,
+        });
+
+        // Add staggered animation to timeline
+        tl.to(lines, {
             y: 0,
             opacity: 1,
-            duration: 1,
-            ease: "power2.out",
+            duration: 5,
+            ease: "power3.out",
             stagger: {
                 amount: 1.5,
                 from: "start",
-                ease: "power2.inOut",
             },
-            scrollTrigger: {
-                trigger: sectionElement,
-                scroller: sectionElement.closest("main"), // Use parent main as scroller
-                start: "top 25%",
-                end: "bottom 40%",
-                scrub: 1.5,
-                toggleActions: "play none none reverse",
-                refreshPriority: 1,
-            },
+        });
+
+        // Create scroll trigger that plays the timeline when section is in view
+        ScrollTrigger.create({
+            trigger: sectionElement,
+            scroller: sectionElement.closest("main"),
+            start: "top 80%",
+            end: "bottom 20%",
+            onEnter: () => tl.play(),
+            onLeave: () => tl.reverse(),
+            onEnterBack: () => tl.play(),
+            onLeaveBack: () => tl.reverse(),
+            refreshPriority: 1,
         });
     }
 </script>
 
 <section
     bind:this={sectionElement}
-    class="w-full min-h-[300vh] relative flex items-start justify-center p-4 pt-8 box-border md:p-8"
+    class="w-full relative flex items-start justify-center px-4 py-8 sm:px-6 lg:px-8"
 >
-    <div class="sticky top-24 w-fit mx-auto">
-        <div class="p-6 md:p-12">
+    <div class="sticky top-4 sm:top-8 lg:top-12 w-full max-w-5xl mx-auto">
+        <div
+            class=" backdrop-blur-md shadow-2xl p-6 sm:p-10 lg:p-16 border mx-2 sm:mx-4"
+        >
             <p
                 bind:this={manifestoElement}
-                class="font-sans font-bold text-center text-black m-0"
-                style="font-size: clamp(1.5rem, 4vw, 4rem); line-height: 1.2; letter-spacing: -0.02em;"
+                class="font-sans font-bold text-center text-gray-900 m-0 leading-tight"
+                style="font-size: clamp(1.5rem, 6vw, 3rem); line-height: clamp(1.2, 1.3 - 0.01vw, 1.1); letter-spacing: clamp(-0.01em, -0.02em, -0.04em);"
             ></p>
         </div>
     </div>
 </section>
-
-<style>
-    :global(.line) {
-        display: block;
-        will-change: transform, opacity;
-        overflow: hidden;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-        section {
-            min-height: 250vh !important;
-        }
-
-        section > div > div {
-            border-width: 2px !important;
-        }
-    }
-
-    @media (max-width: 480px) {
-        section {
-            min-height: 200vh !important;
-            padding: 0.5rem !important;
-        }
-
-        section > div > div {
-            padding: 1rem !important;
-        }
-
-        section p {
-            line-height: 1.3 !important;
-        }
-    }
-
-    /* High contrast mode */
-    @media (prefers-contrast: high) {
-        section > div > div {
-            background: white !important;
-            border-width: 4px !important;
-        }
-
-        section p {
-            font-weight: 900 !important;
-        }
-    }
-
-    /* Reduced motion */
-    @media (prefers-reduced-motion: reduce) {
-        :global(.line) {
-            will-change: auto;
-        }
-    }
-</style>
