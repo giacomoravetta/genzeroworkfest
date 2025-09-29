@@ -1,187 +1,147 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { gsap } from "gsap";
-    import { TextPlugin } from "gsap/TextPlugin";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+    import { SplitText } from "gsap/SplitText";
 
-    gsap.registerPlugin(TextPlugin);
+    gsap.registerPlugin(ScrollTrigger, SplitText);
 
-    // Manifesto text - split into lines for better flow
+    // Manifesto lines - each element becomes a separate animated line
     const manifestoLines = [
-        "Non solo un festival,",
+        "Non solo un festival",
         "ma uno spazio di resistenza creativa.",
-        "",
-        "Dove il lavoro incontra i diritti,",
-        "dove la legalità sfida il malaffare,",
-        "dove giocare è rivoluzionario.",
+        "Dove il lavoro",
+        "incontra i diritti,",
+        "dove la legalità",
+        "sfida il malaffare,",
+        "dove giocare",
+        "è rivoluzionario.",
     ];
 
-    // Component state
-    let manifestoContainer: HTMLElement;
-    let isAnimating = $state(false);
-    let currentLineIndex = $state(0);
+    let manifestoElement: HTMLElement;
+    let sectionElement: HTMLElement;
 
     onMount(() => {
-        initTypewriter();
+        initScrollAnimation();
+
+        // Cleanup on component destroy
+        return () => {
+            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+        };
     });
 
-    function initTypewriter() {
-        if (!manifestoContainer) return;
+    function initScrollAnimation() {
+        if (!manifestoElement || !sectionElement) return;
 
-        isAnimating = true;
-        currentLineIndex = 0;
+        // Clear existing content and create line elements
+        manifestoElement.innerHTML = "";
 
-        // Clear container
-        manifestoContainer.innerHTML = "";
+        // Create individual line elements
+        const lineElements = manifestoLines.map((lineText, index) => {
+            const lineElement = document.createElement("div");
+            lineElement.textContent = lineText;
+            lineElement.classList.add("line");
+            manifestoElement.appendChild(lineElement);
+            return lineElement;
+        });
 
-        // Create timeline
-        const tl = gsap.timeline({
-            onComplete: () => {
-                isAnimating = false;
+        const lines = lineElements;
+
+        // Set initial state - lines start below and invisible
+        gsap.set(lines, {
+            y: 80,
+            opacity: 0,
+            transformOrigin: "center bottom",
+        });
+
+        // Create scroll-triggered animation with parent scroller
+        gsap.to(lines, {
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power2.out",
+            stagger: {
+                amount: 1.5,
+                from: "start",
+                ease: "power2.inOut",
+            },
+            scrollTrigger: {
+                trigger: sectionElement,
+                scroller: sectionElement.closest("main"), // Use parent main as scroller
+                start: "top 25%",
+                end: "bottom 40%",
+                scrub: 1.5,
+                toggleActions: "play none none reverse",
+                refreshPriority: 1,
             },
         });
-
-        // Animate each line sequentially
-        manifestoLines.forEach((line, index) => {
-            // Create line element
-            const lineElement = document.createElement("div");
-            lineElement.className = "manifesto-line";
-            manifestoContainer.appendChild(lineElement);
-
-            // Animate this line's text
-            tl.to(
-                lineElement,
-                {
-                    duration: line.length * 0.05, // Dynamic duration based on line length
-                    text: {
-                        value: line,
-                        delimiter: "",
-                    },
-                    ease: "none",
-                },
-                index === 0 ? 0 : "+=0.3",
-            ); // Small delay between lines
-        });
-    }
-
-    function handleManifestoClick() {
-        if (isAnimating) return;
-
-        // Reset and replay animation
-        initTypewriter();
     }
 </script>
 
 <section
-    class="festival-spirit w-full min-h-[80dvh] flex items-center justify-center px-4 sm:px-6 lg:px-8 flex-shrink-0"
+    bind:this={sectionElement}
+    class="w-full min-h-[300vh] relative flex items-start justify-center p-4 pt-8 box-border md:p-8"
 >
-    <div
-        class="max-w-6xl mx-auto text-center border-black border-2 p-4 backdrop-blur-xl"
-    >
-        <div
-            class="typewriter-container relative inline-block cursor-pointer"
-            onclick={handleManifestoClick}
-            role="button"
-            tabindex="0"
-            aria-label="Manifesto del festival - clicca per rivedere l'animazione"
-        >
-            <div
-                bind:this={manifestoContainer}
-                class="manifesto-text text-2xl sm:text-3xl lg:text-5xl font-sans font-medium text-black leading-relaxed tracking-tight"
-            ></div>
+    <div class="sticky top-24 w-fit mx-auto">
+        <div class="p-6 md:p-12">
+            <p
+                bind:this={manifestoElement}
+                class="font-sans font-bold text-center text-black m-0"
+                style="font-size: clamp(1.5rem, 4vw, 4rem); line-height: 1.2; letter-spacing: -0.02em;"
+            ></p>
         </div>
     </div>
 </section>
 
 <style>
-    .festival-spirit {
-        font-family: "Inter", "Courier New", monospace;
-    }
-
-    .typewriter-container {
-        min-height: 200px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .manifesto-text {
-        text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
-        user-select: none;
-        -webkit-tap-highlight-color: transparent;
-        text-align: center;
-    }
-
-    :global(.manifesto-line) {
+    :global(.line) {
         display: block;
-        margin-bottom: 0.5rem;
-        min-height: 1.2em;
+        will-change: transform, opacity;
+        overflow: hidden;
     }
 
-    :global(.manifesto-line:empty) {
-        min-height: 0.6em;
-    }
-
-    /* Responsive typography */
-    @media (max-width: 640px) {
-        .manifesto-text {
-            font-size: 1.25rem;
-            line-height: 1.5;
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        section {
+            min-height: 250vh !important;
         }
 
-        .typewriter-container {
-            min-height: 150px;
+        section > div > div {
+            border-width: 2px !important;
         }
     }
 
-    @media (min-width: 641px) and (max-width: 1024px) {
-        .manifesto-text {
-            font-size: 1.875rem;
-            line-height: 1.4;
+    @media (max-width: 480px) {
+        section {
+            min-height: 200vh !important;
+            padding: 0.5rem !important;
         }
 
-        .typewriter-container {
-            min-height: 175px;
+        section > div > div {
+            padding: 1rem !important;
         }
-    }
 
-    @media (min-width: 1025px) {
-        .typewriter-container {
-            min-height: 250px;
+        section p {
+            line-height: 1.3 !important;
         }
     }
 
-    /* High contrast mode support */
+    /* High contrast mode */
     @media (prefers-contrast: high) {
-        .manifesto-text {
-            text-shadow: none;
-            font-weight: 900;
-        }
-    }
-
-    /* Reduced motion accessibility */
-    @media (prefers-reduced-motion: reduce) {
-        .manifesto-text {
-            transition: none;
-        }
-    }
-
-    /* Focus states for accessibility */
-    .typewriter-container:focus {
-        outline: 2px solid #000;
-        outline-offset: 4px;
-    }
-
-    /* Print styles */
-    @media print {
-        .festival-spirit {
+        section > div > div {
             background: white !important;
-            color: black !important;
+            border-width: 4px !important;
         }
 
-        .manifesto-text {
-            font-size: 16pt !important;
-            text-shadow: none !important;
-            transform: none !important;
+        section p {
+            font-weight: 900 !important;
+        }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+        :global(.line) {
+            will-change: auto;
         }
     }
 </style>
