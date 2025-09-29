@@ -91,9 +91,7 @@
     class="w-full relative flex items-start justify-center px-4 py-8 sm:px-6 lg:px-8"
 >
     <div class="sticky top-4 sm:top-8 lg:top-12 w-full max-w-5xl mx-auto">
-        <div
-            class=" backdrop-blur-md shadow-2xl p-6 sm:p-10 lg:p-16 border mx-2 sm:mx-4"
-        >
+        <div class=" backdrop-blur-md p-6 sm:p-10 lg:p-16 border mx-2 sm:mx-4">
             <p
                 bind:this={manifestoElement}
                 class="font-sans font-bold text-center text-gray-900 m-0 leading-tight"

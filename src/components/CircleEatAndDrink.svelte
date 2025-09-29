@@ -79,8 +79,7 @@
                 aria-label="Si mangia e si beve"
                 textLength="2830"
             >
-                — Si mangia e si beve — Si mangia e si beve — Si mangia e si
-                beve —&nbsp;
+                Si mangia e si beve — Si mangia e si beve —&nbsp;
             </textPath>
         </text>
     </svg>
@@ -136,7 +135,7 @@
     }
 
     .circles-text-styling {
-        font-size: 110px;
+        font-size: clamp(60px, 15vw, 110px);
         font-weight: 700;
         fill: #374151;
         letter-spacing: 0.05em;

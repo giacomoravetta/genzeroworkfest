@@ -1,8 +1,8 @@
 ---
 import Logo from "./Logo.astro";
+import Footer from "./Footer.astro";
 
 import FestivalSpirit from "./FestivalSpirit.svelte";
-
 import ProgramSchedule from "./ProgramSchedule.svelte";
 import CircleEatAndDrink from "./CircleEatAndDrink.svelte";
 ---
@@ -10,72 +10,9 @@ import CircleEatAndDrink from "./CircleEatAndDrink.svelte";
 <div
     class="absolute top-0 left-0 w-screen h-[100dvh] flex flex-col items-center"
 >
-    <div
-        class="h-fit opacity-0 md:h-[20dvh] flex flex-col sm:flex-row justify-between items-center p-4 sm:p-6 lg:p-10 w-full gap-4 sm:gap-0 flex-shrink-0"
-    >
-        <div class="logo-wrapper w-full sm:w-40 lg:w-[20dvw]"><Logo /></div>
-
-        <!-- Desktop Navigation -->
-        <nav class="hidden lg:flex items-center space-x-8">
-            <a
-                href="#festival-spirit"
-                class="nav-link relative font-sans font-medium text-gray-800 hover:text-black transition-colors origin-center hover:scale-105 transition-transform duration-200"
-                >Manifesto</a
-            >
-            <a
-                href="#program"
-                class="nav-link relative font-sans font-medium text-gray-800 hover:text-black transition-colors origin-center hover:scale-105 transition-transform duration-200"
-                >Programma</a
-            >
-            <a
-                href="#info"
-                class="nav-link relative font-sans font-medium text-gray-800 hover:text-black transition-colors origin-center hover:scale-105 transition-transform duration-200"
-                >Info</a
-            >
-            <a
-                href="#contatti"
-                class="nav-link relative font-sans font-medium text-gray-800 hover:text-black transition-colors origin-center hover:scale-105 transition-transform duration-200"
-                >Contatti</a
-            >
-        </nav>
-
-        <div class="flex items-center gap-4">
-            <div class="text-center sm:text-right">
-                <h2
-                    class="text-xl sm:text-2xl lg:text-4xl font-sans font-bold sm:w-auto lg:w-[20dvw]"
-                >
-                    18 Ottobre 2025
-                </h2>
-                <h3
-                    class="text-xl sm:text-xl lg:text-xl font-sans font-bold sm:w-auto lg:w-[20dvw]"
-                >
-                    10:30 AM / 00:00 PM
-                </h3>
-            </div>
-
-            <!-- Mobile Menu Button -->
-            <button
-                class="lg:hidden mobile-menu-btn p-2 rounded-md hover:bg-gray-100 transition-colors"
-            >
-                <svg
-                    class="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
-        </div>
-    </div>
-
     <!-- Mobile Navigation Menu -->
     <div
-        class="mobile-menu hidden lg:hidden fixed top-20 left-0 right-0 bg-white/90 backdrop-blur-md shadow-lg border-b z-50"
+        class="mobile-menu hidden lg:hidden fixed top-0 left-0 right-0 backdrop-blur-sm z-50 pt-20"
     >
         <nav class="flex flex-col p-4 space-y-4">
             <a
@@ -101,8 +38,9 @@ import CircleEatAndDrink from "./CircleEatAndDrink.svelte";
         </nav>
     </div>
 
+    <!-- Ghost Header -->
     <header
-        class="fixed top-0 h-fit md:h-[20dvh] left-0 z-40 flex flex-col sm:flex-row justify-between items-center p-4 sm:p-6 lg:p-10 w-full gap-4 sm:gap-0"
+        class="relative top-0 h-fit md:h-[20dvh] left-0 z-40 flex flex-col sm:flex-row justify-between items-center p-4 sm:p-6 lg:p-10 w-full gap-4 sm:gap-0"
     >
         <div class="logo-wrapper w-full sm:w-40 lg:w-[20dvw]">
             <Logo />
@@ -142,13 +80,13 @@ import CircleEatAndDrink from "./CircleEatAndDrink.svelte";
                 <h3
                     class="text-xl sm:text-xl lg:text-xl font-sans font-bold sm:w-auto lg:w-[20dvw]"
                 >
-                    10:30 AM / 00:00 PM
+                    10:00 AM / 00:00 PM
                 </h3>
             </div>
 
             <!-- Mobile Menu Button -->
             <button
-                class="lg:hidden fixed-mobile-menu-btn p-2 rounded-md hover:bg-gray-100 transition-colors"
+                class="lg:hidden mobile-menu-btn p-2 rounded-md hover:bg-gray-100 transition-colors"
             >
                 <svg
                     class="w-6 h-6"
@@ -166,45 +104,21 @@ import CircleEatAndDrink from "./CircleEatAndDrink.svelte";
         </div>
     </header>
 
-    <!-- Fixed Mobile Navigation Menu -->
-    <div
-        class="fixed-mobile-menu hidden lg:hidden fixed top-20 left-0 right-0 bg-white/90 backdrop-blur-md shadow-lg border-b z-30"
-    >
-        <nav class="flex flex-col p-4 space-y-4">
-            <a
-                href="#festival-spirit"
-                class="fixed-mobile-nav-link font-sans font-medium text-gray-800 hover:text-black transition-all duration-300 py-2 border-l-3 border-transparent hover:border-black pl-3 hover:pl-4"
-                >Manifesto</a
-            >
-            <a
-                href="#program"
-                class="fixed-mobile-nav-link font-sans font-medium text-gray-800 hover:text-black transition-all duration-300 py-2 border-l-3 border-transparent hover:border-black pl-3 hover:pl-4"
-                >Programma</a
-            >
-            <a
-                href="#info"
-                class="fixed-mobile-nav-link font-sans font-medium text-gray-800 hover:text-black transition-all duration-300 py-2 border-l-3 border-transparent hover:border-black pl-3 hover:pl-4"
-                >Info</a
-            >
-            <a
-                href="#contatti"
-                class="fixed-mobile-nav-link font-sans font-medium text-gray-800 hover:text-black transition-all duration-300 py-2 border-l-3 border-transparent hover:border-black pl-3 hover:pl-4"
-                >Contatti</a
-            >
-        </nav>
-    </div>
-
     <!-- Rotating Circle Component -->
     <CircleEatAndDrink client:load />
 
-    <!-- Fixed header content -->
-
+    <!-- Main Content -->
     <main
-        class="w-full h-full flex flex-col gap-3 sm:gap-4 lg:gap-5 overflow-y-scroll"
+        class="w-full h-full flex flex-col gap-8 sm:gap-12 lg:gap-16 overflow-y-scroll pt-20 md:pt-[20dvh]"
     >
         <!-- Festival Spirit Section -->
         <FestivalSpirit client:load />
         <ProgramSchedule client:load />
+
+        <!-- Footer Section -->
+        <div class="mt-16 sm:mt-24 lg:mt-32">
+            <Footer />
+        </div>
     </main>
 
     <!-- WhatsApp Share Button -->
@@ -229,182 +143,157 @@ import CircleEatAndDrink from "./CircleEatAndDrink.svelte";
             </svg>
         </a>
     </div>
-
-    <script>
-        import { gsap } from "gsap";
-
-        document.addEventListener("DOMContentLoaded", function () {
-            const logoWrapper = document.querySelector(".logo-wrapper");
-
-            if (logoWrapper) {
-                // Hover interactions
-                logoWrapper.addEventListener("mouseenter", function () {
-                    gsap.to(logoWrapper, {
-                        scale: 1.1,
-                        rotation: 2,
-                        duration: 0.3,
-                        ease: "power2.out",
-                    });
-                });
-
-                logoWrapper.addEventListener("mouseleave", function () {
-                    gsap.to(logoWrapper, {
-                        scale: 1,
-                        rotation: 0,
-                        duration: 0.5,
-                        ease: "power2.out",
-                    });
-                });
-            }
-
-            // Mobile menu functionality for first header
-            const mobileMenuBtn = document.querySelector(".mobile-menu-btn");
-            const mobileMenu = document.querySelector(".mobile-menu");
-
-            if (mobileMenuBtn && mobileMenu) {
-                mobileMenuBtn.addEventListener("click", function () {
-                    mobileMenu.classList.toggle("hidden");
-
-                    // Animate menu
-                    if (!mobileMenu.classList.contains("hidden")) {
-                        gsap.from(mobileMenu, {
-                            opacity: 0,
-                            y: -20,
-                            duration: 0.3,
-                            ease: "power2.out",
-                        });
-                    }
-                });
-
-                // Close menu when clicking nav links
-                const mobileNavLinks =
-                    document.querySelectorAll(".mobile-nav-link");
-                mobileNavLinks.forEach((link) => {
-                    link.addEventListener("click", () => {
-                        mobileMenu.classList.add("hidden");
-                    });
-                });
-            }
-
-            // Mobile menu functionality for fixed header
-            const fixedMobileMenuBtn = document.querySelector(
-                ".fixed-mobile-menu-btn",
-            );
-            const fixedMobileMenu =
-                document.querySelector(".fixed-mobile-menu");
-
-            if (fixedMobileMenuBtn && fixedMobileMenu) {
-                fixedMobileMenuBtn.addEventListener("click", function () {
-                    fixedMobileMenu.classList.toggle("hidden");
-
-                    // Animate menu
-                    if (!fixedMobileMenu.classList.contains("hidden")) {
-                        gsap.from(fixedMobileMenu, {
-                            opacity: 0,
-                            y: -20,
-                            duration: 0.3,
-                            ease: "power2.out",
-                        });
-                    }
-                });
-
-                // Close menu when clicking nav links
-                const fixedMobileNavLinks = document.querySelectorAll(
-                    ".fixed-mobile-nav-link",
-                );
-                fixedMobileNavLinks.forEach((link) => {
-                    link.addEventListener("click", () => {
-                        fixedMobileMenu.classList.add("hidden");
-                    });
-                });
-            }
-
-            // WhatsApp button animations
-            const whatsappButton = document.querySelector(".whatsapp-button");
-
-            if (whatsappButton) {
-                // Entry animation
-                gsap.from(whatsappButton, {
-                    scale: 0,
-                    rotation: 180,
-                    duration: 0.8,
-                    ease: "back.out(1.7)",
-                    delay: 1,
-                });
-
-                // Floating animation
-                gsap.to(whatsappButton, {
-                    y: -10,
-                    duration: 2,
-                    ease: "power2.inOut",
-                    yoyo: true,
-                    repeat: -1,
-                });
-
-                // Hover animations
-                const whatsappLink =
-                    whatsappButton.querySelector(".whatsapp-link");
-
-                whatsappButton.addEventListener("mouseenter", function () {
-                    gsap.to(whatsappButton, {
-                        scale: 1.1,
-                        duration: 0.3,
-                        ease: "power2.out",
-                    });
-                });
-
-                whatsappButton.addEventListener("mouseleave", function () {
-                    gsap.to(whatsappButton, {
-                        scale: 1,
-                        duration: 0.3,
-                        ease: "power2.out",
-                    });
-                });
-            }
-
-            // Remove GSAP navigation effects since we're using Tailwind classes
-        });
-    </script>
-
-    <style>
-        .logo-wrapper {
-            cursor: pointer;
-            transform-origin: center center;
-            transition: filter 0.3s ease;
-        }
-
-        .logo-wrapper:hover {
-            filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.2));
-        }
-
-        .whatsapp-button {
-            transform-origin: center center;
-        }
-
-        .whatsapp-link {
-            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
-        }
-
-        .whatsapp-link:hover {
-            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.6);
-            transform: translateY(-2px);
-        }
-
-        /* Navigation hover underline effect */
-        .nav-link::after {
-            content: "";
-            position: absolute;
-            bottom: -4px;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: #000;
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-    </style>
 </div>
+
+<script>
+    import { gsap } from "gsap";
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const logoWrapper = document.querySelector(".logo-wrapper");
+
+        if (logoWrapper) {
+            // Hover interactions
+            logoWrapper.addEventListener("mouseenter", function () {
+                gsap.to(logoWrapper, {
+                    scale: 1.1,
+                    rotation: 2,
+                    duration: 0.3,
+                    ease: "power2.out",
+                });
+            });
+
+            logoWrapper.addEventListener("mouseleave", function () {
+                gsap.to(logoWrapper, {
+                    scale: 1,
+                    rotation: 0,
+                    duration: 0.5,
+                    ease: "power2.out",
+                });
+            });
+        }
+
+        // Mobile menu functionality
+        const mobileMenuBtn = document.querySelector(".mobile-menu-btn");
+        const mobileMenu = document.querySelector(".mobile-menu");
+
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener("click", function (e) {
+                e.stopPropagation();
+                mobileMenu.classList.toggle("hidden");
+
+                // Animate menu
+                if (!mobileMenu.classList.contains("hidden")) {
+                    gsap.from(mobileMenu, {
+                        opacity: 0,
+                        y: -20,
+                        duration: 0.3,
+                        ease: "power2.out",
+                    });
+                }
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener("click", function (e) {
+                if (
+                    !mobileMenu.contains(e.target) &&
+                    !mobileMenuBtn.contains(e.target)
+                ) {
+                    mobileMenu.classList.add("hidden");
+                }
+            });
+
+            // Close menu when clicking nav links
+            const mobileNavLinks =
+                document.querySelectorAll(".mobile-nav-link");
+            mobileNavLinks.forEach((link) => {
+                link.addEventListener("click", () => {
+                    mobileMenu.classList.add("hidden");
+                });
+            });
+        }
+
+        // WhatsApp button animations
+        const whatsappButton = document.querySelector(".whatsapp-button");
+
+        if (whatsappButton) {
+            // Entry animation
+            gsap.from(whatsappButton, {
+                scale: 0,
+                rotation: 180,
+                duration: 0.8,
+                ease: "back.out(1.7)",
+                delay: 1,
+            });
+
+            // Floating animation
+            gsap.to(whatsappButton, {
+                y: -10,
+                duration: 2,
+                ease: "power2.inOut",
+                yoyo: true,
+                repeat: -1,
+            });
+
+            // Hover animations
+            const whatsappLink = whatsappButton.querySelector(".whatsapp-link");
+
+            whatsappButton.addEventListener("mouseenter", function () {
+                gsap.to(whatsappButton, {
+                    scale: 1.1,
+                    duration: 0.3,
+                    ease: "power2.out",
+                });
+            });
+
+            whatsappButton.addEventListener("mouseleave", function () {
+                gsap.to(whatsappButton, {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: "power2.out",
+                });
+            });
+        }
+    });
+</script>
+
+<style>
+    .logo-wrapper {
+        cursor: pointer;
+        transform-origin: center center;
+        transition: filter 0.3s ease;
+    }
+
+    .logo-wrapper:hover {
+        filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.2));
+    }
+
+    .whatsapp-button {
+        transform-origin: center center;
+    }
+
+    .whatsapp-link {
+        box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+    }
+
+    .whatsapp-link:hover {
+        box-shadow: 0 6px 20px rgba(34, 197, 94, 0.6);
+        transform: translateY(-2px);
+    }
+
+    /* Navigation hover underline effect */
+    .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: #000;
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+    }
+
+    .nav-link:hover::after {
+        width: 100%;
+    }
+</style>
