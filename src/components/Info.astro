@@ -2,9 +2,8 @@
 import Logo from "./Logo.astro";
 import Footer from "./Footer.astro";
 
-import FestivalSpirit from "./FestivalSpirit.svelte";
 import ProgramSchedule from "./ProgramSchedule.svelte";
-import CircleEatAndDrink from "./CircleEatAndDrink.svelte";
+import Marquee from "./Marquee.svelte";
 ---
 
 <div
@@ -20,11 +19,7 @@ import CircleEatAndDrink from "./CircleEatAndDrink.svelte";
                 class="mobile-nav-link font-sans font-medium text-gray-800 hover:text-black transition-all duration-300 py-2 border-l-3 border-transparent hover:border-black pl-3 hover:pl-4"
                 >Programma</a
             >
-            <a
-                href="#info"
-                class="mobile-nav-link font-sans font-medium text-gray-800 hover:text-black transition-all duration-300 py-2 border-l-3 border-transparent hover:border-black pl-3 hover:pl-4"
-                >Info</a
-            >
+
             <a
                 href="#contatti"
                 class="mobile-nav-link font-sans font-medium text-gray-800 hover:text-black transition-all duration-300 py-2 border-l-3 border-transparent hover:border-black pl-3 hover:pl-4"
@@ -50,11 +45,6 @@ import CircleEatAndDrink from "./CircleEatAndDrink.svelte";
                     href="#program"
                     class="nav-link relative font-sans font-medium text-gray-800 hover:text-black transition-colors origin-center hover:scale-105 transition-transform duration-200"
                     >Programma</a
-                >
-                <a
-                    href="#info"
-                    class="nav-link relative font-sans font-medium text-gray-800 hover:text-black transition-colors origin-center hover:scale-105 transition-transform duration-200"
-                    >Info</a
                 >
                 <a
                     href="#contatti"
@@ -97,20 +87,17 @@ import CircleEatAndDrink from "./CircleEatAndDrink.svelte";
     </header>
 
     <!-- Rotating Circle Component -->
-    <CircleEatAndDrink client:load />
+    <Marquee client:load />
 
     <!-- Main Content -->
     <main
-        class="w-full h-full flex flex-col gap-8 sm:gap-12 lg:gap-16 overflow-y-scroll md:pt-[80dvh]"
+        class="w-full h-full flex flex-col gap-8 sm:gap-12 lg:gap-16 overflow-y-scroll"
     >
-        <!-- Festival Spirit Section -->
-
         <ProgramSchedule client:load />
 
         <!-- Footer Section -->
-        <div class="mt-16 sm:mt-24 lg:mt-32">
-            <Footer />
-        </div>
+
+        <Footer />
     </main>
 
     <!-- WhatsApp Share Button -->
@@ -141,29 +128,6 @@ import CircleEatAndDrink from "./CircleEatAndDrink.svelte";
     import { gsap } from "gsap";
 
     document.addEventListener("DOMContentLoaded", function () {
-        const logoWrapper = document.querySelector(".logo-wrapper");
-
-        if (logoWrapper) {
-            // Hover interactions
-            logoWrapper.addEventListener("mouseenter", function () {
-                gsap.to(logoWrapper, {
-                    scale: 1.1,
-                    rotation: 2,
-                    duration: 0.3,
-                    ease: "power2.out",
-                });
-            });
-
-            logoWrapper.addEventListener("mouseleave", function () {
-                gsap.to(logoWrapper, {
-                    scale: 1,
-                    rotation: 0,
-                    duration: 0.5,
-                    ease: "power2.out",
-                });
-            });
-        }
-
         // Mobile menu functionality
         const mobileMenuBtn = document.querySelector(".mobile-menu-btn");
         const mobileMenu = document.querySelector(".mobile-menu");
@@ -253,10 +217,6 @@ import CircleEatAndDrink from "./CircleEatAndDrink.svelte";
         cursor: pointer;
         transform-origin: center center;
         transition: filter 0.3s ease;
-    }
-
-    .logo-wrapper:hover {
-        filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.2));
     }
 
     .whatsapp-button {

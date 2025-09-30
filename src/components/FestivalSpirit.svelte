@@ -42,11 +42,11 @@
         const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
 
         if (isMobile) {
-            camera.position.set(0, 0, 8); // Closer on mobile
+            camera.position.set(0, 2, 10); // Higher and further back on mobile
         } else if (isTablet) {
-            camera.position.set(0, 0, 12); // Medium distance on tablet
+            camera.position.set(-1, 3, 15); // Higher and medium distance on tablet
         } else {
-            camera.position.set(0, 0, 20); // Much further back on desktop for bigger model
+            camera.position.set(-2, 2, 22); // Higher and further back on desktop
         }
 
         // Create renderer
@@ -108,11 +108,11 @@
 
                 let scale;
                 if (isMobile) {
-                    scale = 12 / maxDim; // Much bigger on mobile
+                    scale = 8 / maxDim; // Smaller on mobile
                 } else if (isTablet) {
-                    scale = 20 / maxDim; // Much bigger on tablet
+                    scale = 20 / maxDim; // Slightly smaller on tablet
                 } else {
-                    scale = 30 / maxDim; // Fill screen width on desktop
+                    scale = 36 / maxDim; // Fill screen width on desktop
                 }
 
                 model.scale.setScalar(scale);
