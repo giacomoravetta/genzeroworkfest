@@ -1,6 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
+<<<<<<< HEAD
 import Logo from "../components/Logo.astro";
+=======
+import Info from "../components/Info.astro";
+import FestivalSpirit from "../components/FestivalSpirit.svelte";
+>>>>>>> new
 import Background from "../components/Background.astro";
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
@@ -9,6 +14,7 @@ import Background from "../components/Background.astro";
 
 <Layout>
     <div class="relative">
+<<<<<<< HEAD
         <Background />
         <div
             class="absolute top-0 left-0 w-[100dvw] h-[100dvh] flex flex-col items-center"
@@ -23,5 +29,10 @@ import Background from "../components/Background.astro";
                 Stiamo Arrivando!
             </h1>
         </div>
+=======
+        <!-- <Background /> -->
+        <FestivalSpirit client:load />
+        <Info />
+>>>>>>> new
     </div>
 </Layout>
