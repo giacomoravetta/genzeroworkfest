@@ -5,7 +5,7 @@ import svelte from "@astrojs/svelte";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://genzeroworkfest.com",
+  site: "https://genzeroworkfest.it",
   integrations: [svelte()],
   vite: {
     plugins: [tailwindcss()],

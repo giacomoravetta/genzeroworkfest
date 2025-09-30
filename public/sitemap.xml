@@ -6,17 +6,17 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
     <url>
-        <loc>https://genzeroworkfest.com/</loc>
+        <loc>https://genzeroworkfest.it/</loc>
         <lastmod>2024-12-19</lastmod>
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
         <image:image>
-            <image:loc>https://genzeroworkfest.com/W.svg</image:loc>
+            <image:loc>https://genzeroworkfest.it/W.svg</image:loc>
             <image:title>Generazione Zero Workfest</image:title>
             <image:caption>Un festival per ripensare il rapporto con il lavoro</image:caption>
         </image:image>
         <image:image>
-            <image:loc>https://genzeroworkfest.com/Logo.svg</image:loc>
+            <image:loc>https://genzeroworkfest.it/Logo.svg</image:loc>
             <image:title>Generazione Zero Workfest</image:title>
             <image:caption>Logo ufficiale del festival</image:caption>
         </image:image>

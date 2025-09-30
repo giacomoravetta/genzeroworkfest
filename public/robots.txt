@@ -1,11 +1,11 @@
 # Robots.txt for Generazione Zero Workfest
-# https://genzeroworkfest.com/robots.txt
+# https://genzeroworkfest.it/robots.txt
 
 User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://genzeroworkfest.com/sitemap.xml
+Sitemap: https://genzeroworkfest.it/sitemap.xml
 
 # Crawl-delay for respectful crawling
 Crawl-delay: 1
