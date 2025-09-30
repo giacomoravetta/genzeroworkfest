@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<browserconfig>
+    <msapplication>
+        <tile>
+            <square70x70logo src="/W.svg"/>
+            <square150x150logo src="/W.svg"/>
+            <wide310x150logo src="/W.svg"/>
+            <square310x310logo src="/W.svg"/>
+            <TileColor>#000000</TileColor>
+        </tile>
+        <notification>
+            <polling-uri src="https://genzeroworkfest.com/notifications/poll1.xml"/>
+            <polling-uri src="https://genzeroworkfest.com/notifications/poll2.xml"/>
+            <polling-uri src="https://genzeroworkfest.com/notifications/poll3.xml"/>
+            <polling-uri src="https://genzeroworkfest.com/notifications/poll4.xml"/>
+            <polling-uri src="https://genzeroworkfest.com/notifications/poll5.xml"/>
+            <frequency>30</frequency>
+            <cycle>1</cycle>
+        </notification>
+    </msapplication>
+</browserconfig>

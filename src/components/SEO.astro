@@ -1,0 +1,159 @@
+---
+export interface Props {
+    title?: string;
+    description?: string;
+    image?: string;
+    url?: string;
+    type?: string;
+    keywords?: string;
+}
+
+const {
+    title = "Generazione Zero Workfest",
+    description = "Un festival per ripensare il rapporto con il lavoro attraverso creatività, socializzazione e confronto. Dungeons & Dragons, laboratori creativi, dibattiti sociali e musica dal vivo.",
+    image = "/W.svg",
+    url = Astro.url.href,
+    type = "website",
+    keywords = "generazione zero, workfest, festival lavoro, creatività, dungeons dragons, laboratori, dibattiti sociali, musica dal vivo, integrazione, antimafia",
+} = Astro.props;
+
+const canonicalUrl = new URL(url, Astro.site).href;
+const imageUrl = new URL(image, Astro.site).href;
+---
+
+<!-- Primary Meta Tags -->
+<title>{title}</title>
+<meta name="title" content={title} />
+<meta name="description" content={description} />
+<meta name="keywords" content={keywords} />
+<meta name="author" content="Generazione Zero Workfest" />
+<meta name="robots" content="index, follow" />
+<meta name="language" content="Italian" />
+<meta name="revisit-after" content="7 days" />
+
+<!-- Canonical URL -->
+<link rel="canonical" href={canonicalUrl} />
+
+<!-- PWA Manifest -->
+<link rel="manifest" href="/manifest.json" />
+
+<!-- Apple Touch Icon -->
+<link rel="apple-touch-icon" href="/W.svg" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content="GenZero Workfest" />
+
+<!-- Microsoft Tiles -->
+<meta name="msapplication-TileImage" content="/Logo.svg" />
+<meta name="msapplication-TileColor" content="#000000" />
+<meta name="msapplication-config" content="/browserconfig.xml" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={type} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:site_name" content="Generazione Zero Workfest" />
+<meta property="og:locale" content="it_IT" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />
+<meta name="twitter:url" content={canonicalUrl} />
+
+<!-- Additional SEO Meta Tags -->
+<meta name="theme-color" content="#000000" />
+<meta name="msapplication-TileColor" content="#000000" />
+
+<!-- Geo Tags -->
+<meta name="geo.region" content="IT" />
+<meta name="geo.placename" content="Italia" />
+<meta name="ICBM" content="41.8719, 12.5674" />
+
+<!-- Content Tags -->
+<meta name="rating" content="general" />
+<meta name="distribution" content="global" />
+<meta name="copyright" content="© 2024 Generazione Zero Workfest" />
+
+<!-- Structured Data - Event Schema -->
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Event",
+        "name": "Generazione Zero Workfest",
+        "description": "Un festival per ripensare il rapporto con il lavoro attraverso creatività, socializzazione e confronto",
+        "startDate": "2024-12-01T10:00:00+01:00",
+        "endDate": "2024-12-01T23:59:00+01:00",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "location": {
+            "@type": "Place",
+            "name": "Venue TBD",
+            "address": {
+                "@type": "PostalAddress",
+                "addressCountry": "IT"
+            }
+        },
+        "organizer": {
+            "@type": "Organization",
+            "name": "Generazione Zero"
+        },
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR",
+            "availability": "https://schema.org/InStock"
+        },
+        "image": ["https://genzeroworkfest.com/W.svg"],
+        "performer": [
+            {
+                "@type": "Organization",
+                "name": "Artisti Locali"
+            }
+        ],
+        "subEvent": [
+            {
+                "@type": "Event",
+                "name": "Dungeons & Dragons",
+                "startDate": "2024-12-01T10:00:00+01:00",
+                "endDate": "2024-12-01T12:30:00+01:00",
+                "description": "Gioco di ruolo da tavolo collaborativo con Samuele Zambon"
+            },
+            {
+                "@type": "Event",
+                "name": "Yoga",
+                "startDate": "2024-12-01T11:00:00+01:00",
+                "endDate": "2024-12-01T12:00:00+01:00",
+                "description": "Pratica yoga con Daniela Franceschinelli"
+            },
+            {
+                "@type": "Event",
+                "name": "Cucito e Uncinetto",
+                "startDate": "2024-12-01T10:00:00+01:00",
+                "endDate": "2024-12-01T12:30:00+01:00",
+                "description": "Laboratorio creativo con Benny Garegnani e Alessia Manzo"
+            },
+            {
+                "@type": "Event",
+                "name": "La Società che non Tace",
+                "description": "Dibattito su lavoro e legalità"
+            },
+            {
+                "@type": "Event",
+                "name": "Cara Italia, TVB",
+                "description": "Confronto sull'integrazione e cittadinanza"
+            }
+        ]
+    }
+</script>
+
+<!-- Preload critical resources -->
+<link rel="preload" href="/Logo.svg" as="image" type="image/svg+xml" />
+<link rel="preload" href="/W.svg" as="image" type="image/svg+xml" />
+<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+
+<!-- Prefetch for social sharing -->
+<link rel="prefetch" href={imageUrl} />

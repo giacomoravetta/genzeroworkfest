@@ -7,11 +7,22 @@ import Info from "../components/Info.astro";
 import FestivalSpirit from "../components/FestivalSpirit.svelte";
 import Background from "../components/Background.astro";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const seoData = {
+    title: "Generazione Zero Workfest",
+    description:
+        "Un festival per ripensare il rapporto con il lavoro attraverso creatività, socializzazione e confronto. Dungeons & Dragons, yoga, laboratori creativi, dibattiti su legalità e integrazione, musica dal vivo e tanto altro.",
+    keywords:
+        "generazione zero, workfest, festival lavoro, creatività, dungeons dragons, yoga, laboratori creativi, antimafia, integrazione, cittadinanza, musica dal vivo, beer pong, dibattiti sociali",
+    image: "/W.svg",
+};
 ---
 
-<Layout>
+<Layout
+    title={seoData.title}
+    description={seoData.description}
+    keywords={seoData.keywords}
+    image={seoData.image}
+>
     <div class="relative">
         <!-- <Background /> -->
         <FestivalSpirit client:load />
