@@ -1,102 +1,159 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { gsap } from "gsap";
-    import { ScrollTrigger } from "gsap/ScrollTrigger";
-    import { SplitText } from "gsap/SplitText";
+    import * as THREE from "three";
+    import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
-    gsap.registerPlugin(ScrollTrigger, SplitText);
-
-    // Manifesto lines - each element becomes a separate animated line
-    const manifestoLines = [
-        "Non solo un festival",
-        "ma uno spazio di",
-        "resistenza creativa",
-        "Dove il lavoro",
-        "incontra i diritti",
-        "e la legalità,",
-        "dove giocare",
-        "è rivoluzionario.",
-    ];
-
-    let manifestoElement: HTMLElement;
-    let sectionElement: HTMLElement;
+    let container: HTMLElement;
+    let scene: THREE.Scene;
+    let camera: THREE.PerspectiveCamera;
+    let renderer: THREE.WebGLRenderer;
+    let model: THREE.Group;
+    let animationId: number;
 
     onMount(() => {
-        initScrollAnimation();
+        initThreeJS();
+        loadModel();
+        animate();
 
         // Cleanup on component destroy
         return () => {
-            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            if (renderer) {
+                renderer.dispose();
+            }
         };
     });
 
-    function initScrollAnimation() {
-        if (!manifestoElement || !sectionElement) return;
+    function initThreeJS() {
+        // Create scene
+        scene = new THREE.Scene();
 
-        // Clear existing content and create line elements
-        manifestoElement.innerHTML = "";
+        // Create camera
+        camera = new THREE.PerspectiveCamera(
+            75,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            1000,
+        );
+        // Responsive camera distance - closer on mobile, further on desktop
+        const isMobile = window.innerWidth < 768;
+        const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
 
-        // Create individual line elements
-        const lineElements = manifestoLines.map((lineText, index) => {
-            const lineElement = document.createElement("div");
-            lineElement.textContent = lineText;
-            lineElement.classList.add("line");
-            manifestoElement.appendChild(lineElement);
-            return lineElement;
+        if (isMobile) {
+            camera.position.set(0, 0, 8); // Closer on mobile
+        } else if (isTablet) {
+            camera.position.set(0, 0, 12); // Medium distance on tablet
+        } else {
+            camera.position.set(0, 0, 20); // Much further back on desktop for bigger model
+        }
+
+        // Create renderer
+        renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            alpha: true,
         });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setClearColor(0x000000, 0); // Transparent background
 
-        const lines = lineElements;
+        // Add renderer to container
+        container.appendChild(renderer.domElement);
 
-        // Set initial state - lines start below and invisible
-        gsap.set(lines, {
-            y: 100,
-            opacity: 0,
-            transformOrigin: "center bottom",
-        });
+        // Add bright ambient light
+        const ambientLight = new THREE.AmbientLight(0xffffff, 3.5);
+        scene.add(ambientLight);
 
-        // Create timeline for sequential animation
-        const tl = gsap.timeline({
-            paused: true,
-        });
+        // Add bright directional light
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
+        directionalLight.position.set(5, 5, 5);
+        directionalLight.castShadow = false;
+        scene.add(directionalLight);
 
-        // Add staggered animation to timeline
-        tl.to(lines, {
-            y: 0,
-            opacity: 1,
-            duration: 5,
-            ease: "power3.out",
-            stagger: {
-                amount: 1.5,
-                from: "start",
+        // Handle window resize
+        const handleResize = () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        };
+
+        window.addEventListener("resize", handleResize);
+
+        // Cleanup resize listener
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }
+
+    function loadModel() {
+        const loader = new GLTFLoader();
+
+        loader.load(
+            "/W.glb",
+            (gltf) => {
+                model = gltf.scene;
+
+                // Center the model perfectly
+                const box = new THREE.Box3().setFromObject(model);
+                const center = box.getCenter(new THREE.Vector3());
+
+                // Make model responsive - bigger on desktop
+                const size = box.getSize(new THREE.Vector3());
+                const maxDim = Math.max(size.x, size.y, size.z);
+
+                const isMobile = window.innerWidth < 768;
+                const isTablet =
+                    window.innerWidth >= 768 && window.innerWidth < 1024;
+
+                let scale;
+                if (isMobile) {
+                    scale = 12 / maxDim; // Much bigger on mobile
+                } else if (isTablet) {
+                    scale = 20 / maxDim; // Much bigger on tablet
+                } else {
+                    scale = 30 / maxDim; // Fill screen width on desktop
+                }
+
+                model.scale.setScalar(scale);
+
+                // Perfectly center the model at origin after scaling
+                const scaledBox = new THREE.Box3().setFromObject(model);
+                const scaledCenter = scaledBox.getCenter(new THREE.Vector3());
+                model.position.set(
+                    -scaledCenter.x,
+                    -scaledCenter.y,
+                    -scaledCenter.z,
+                );
+
+                scene.add(model);
             },
-        });
+            (progress) => {
+                console.log(
+                    "Loading progress:",
+                    (progress.loaded / progress.total) * 100 + "%",
+                );
+            },
+            (error) => {
+                console.error("Error loading model:", error);
+            },
+        );
+    }
 
-        // Create scroll trigger that plays the timeline when section is in view
-        ScrollTrigger.create({
-            trigger: sectionElement,
-            scroller: sectionElement.closest("main"),
-            start: "top 80%",
-            end: "bottom 20%",
-            onEnter: () => tl.play(),
-            onLeave: () => tl.reverse(),
-            onEnterBack: () => tl.play(),
-            onLeaveBack: () => tl.reverse(),
-            refreshPriority: 1,
-        });
+    function animate() {
+        animationId = requestAnimationFrame(animate);
+
+        // Rotate the model very slowly around its center (Y-axis) - reversed direction
+        if (model) {
+            model.rotation.y += 0.002; // Much slower rotation, reversed direction
+        }
+
+        renderer.render(scene, camera);
     }
 </script>
 
 <section
-    bind:this={sectionElement}
-    class="w-full relative flex items-start justify-center px-4 py-8 sm:px-6 lg:px-8"
+    class="w-[100dvw] h-[100dvh] relative bg-[#81FBF5] overflow-hidden flex justify-center items-center"
 >
-    <div class="sticky top-4 sm:top-8 lg:top-12 w-full max-w-5xl mx-auto">
-        <div class=" backdrop-blur-md p-6 sm:p-10 lg:p-16 border mx-2 sm:mx-4">
-            <p
-                bind:this={manifestoElement}
-                class="font-sans font-bold text-center text-gray-900 m-0 leading-tight"
-                style="font-size: clamp(1.5rem, 6vw, 3rem); line-height: clamp(1.2, 1.3 - 0.01vw, 1.1); letter-spacing: clamp(-0.01em, -0.02em, -0.04em);"
-            ></p>
-        </div>
-    </div>
+    <div bind:this={container} class="w-full h-full"></div>
 </section>

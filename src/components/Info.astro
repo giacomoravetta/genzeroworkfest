@@ -12,14 +12,9 @@ import CircleEatAndDrink from "./CircleEatAndDrink.svelte";
 >
     <!-- Mobile Navigation Menu -->
     <div
-        class="mobile-menu hidden lg:hidden fixed top-0 left-0 right-0 backdrop-blur-sm z-50 pt-20"
+        class="mobile-menu hidden lg:hidden fixed top-0 left-0 right-0 bg-white z-50"
     >
-        <nav class="flex flex-col p-4 space-y-4">
-            <a
-                href="#festival-spirit"
-                class="mobile-nav-link font-sans font-medium text-gray-800 hover:text-black transition-all duration-300 py-2 border-l-3 border-transparent hover:border-black pl-3 hover:pl-4"
-                >Manifesto</a
-            >
+        <nav class="h-full flex flex-col p-4">
             <a
                 href="#program"
                 class="mobile-nav-link font-sans font-medium text-gray-800 hover:text-black transition-all duration-300 py-2 border-l-3 border-transparent hover:border-black pl-3 hover:pl-4"
@@ -46,32 +41,29 @@ import CircleEatAndDrink from "./CircleEatAndDrink.svelte";
             <Logo />
         </div>
 
-        <!-- Desktop Navigation -->
-        <nav class="hidden lg:flex items-center space-x-8">
-            <a
-                href="#festival-spirit"
-                class="nav-link relative font-sans font-medium text-gray-800 hover:text-black transition-colors origin-center hover:scale-105 transition-transform duration-200"
-                >Manifesto</a
+        <div class="flex items-between justify-between w-full gap-4">
+            <!-- Desktop Navigation -->
+            <nav
+                class="hidden lg:flex items-center justify-center gap-8 w-full"
             >
-            <a
-                href="#program"
-                class="nav-link relative font-sans font-medium text-gray-800 hover:text-black transition-colors origin-center hover:scale-105 transition-transform duration-200"
-                >Programma</a
-            >
-            <a
-                href="#info"
-                class="nav-link relative font-sans font-medium text-gray-800 hover:text-black transition-colors origin-center hover:scale-105 transition-transform duration-200"
-                >Info</a
-            >
-            <a
-                href="#contatti"
-                class="nav-link relative font-sans font-medium text-gray-800 hover:text-black transition-colors origin-center hover:scale-105 transition-transform duration-200"
-                >Contatti</a
-            >
-        </nav>
+                <a
+                    href="#program"
+                    class="nav-link relative font-sans font-medium text-gray-800 hover:text-black transition-colors origin-center hover:scale-105 transition-transform duration-200"
+                    >Programma</a
+                >
+                <a
+                    href="#info"
+                    class="nav-link relative font-sans font-medium text-gray-800 hover:text-black transition-colors origin-center hover:scale-105 transition-transform duration-200"
+                    >Info</a
+                >
+                <a
+                    href="#contatti"
+                    class="nav-link relative font-sans font-medium text-gray-800 hover:text-black transition-colors origin-center hover:scale-105 transition-transform duration-200"
+                    >Contatti</a
+                >
+            </nav>
 
-        <div class="flex items-center gap-4">
-            <div class="text-center sm:text-right">
+            <div class="md:text-right sm:text-right">
                 <h2
                     class="text-xl sm:text-2xl lg:text-4xl font-sans font-bold sm:w-auto lg:w-[20dvw]"
                 >
@@ -109,10 +101,10 @@ import CircleEatAndDrink from "./CircleEatAndDrink.svelte";
 
     <!-- Main Content -->
     <main
-        class="w-full h-full flex flex-col gap-8 sm:gap-12 lg:gap-16 overflow-y-scroll pt-20 md:pt-[20dvh]"
+        class="w-full h-full flex flex-col gap-8 sm:gap-12 lg:gap-16 overflow-y-scroll md:pt-[80dvh]"
     >
         <!-- Festival Spirit Section -->
-        <FestivalSpirit client:load />
+
         <ProgramSchedule client:load />
 
         <!-- Footer Section -->

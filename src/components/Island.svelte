@@ -17,7 +17,7 @@
 </script>
 
 <div
-    class="w-full h-full island flex flex-col justify-between backdrop-blur-xl p-4 sm:p-6 lg:p-10 border-black border-2 border-solid transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl font-sans gap-10"
+    class="w-full h-fit island flex flex-col justify-between backdrop-blur-xl p-4 sm:p-6 lg:p-10 border-black border-2 border-solid transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl font-sans gap-10"
 >
     <div class="island-header">
         <h2

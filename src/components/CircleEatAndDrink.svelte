@@ -14,7 +14,7 @@
             gsap.to(svgRef.querySelector(".circles-text"), {
                 duration: 10,
                 ease: "none",
-                rotation: 360,
+                rotation: -360,
                 transformOrigin: "center",
                 repeat: -1,
             });
@@ -79,7 +79,7 @@
                 aria-label="Si mangia e si beve"
                 textLength="2830"
             >
-                Si mangia e si beve — Si mangia e si beve —&nbsp;
+                Si mangia e si beve — Si fa anche se piove
             </textPath>
         </text>
     </svg>
@@ -88,7 +88,7 @@
 <style>
     .circles-text-wrapper {
         position: fixed;
-        left: 2rem;
+        right: 2rem;
         top: 50vh;
         transform: translateY(-50%);
         width: 180px;
@@ -122,9 +122,8 @@
 
     @media only screen and (max-width: 767px) {
         .circles-text-wrapper {
-            width: 120px;
-            height: 120px;
-            left: 1rem;
+            width: 200px;
+            height: 200px;
         }
     }
 
