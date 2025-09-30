@@ -3,11 +3,10 @@
 </script>
 
 <section
-    id="program"
     class="relative flex flex-col justify-center items-start w-full h-auto px-4 sm:px-6 lg:px-40 pt-8 sm:pt-12 lg:pt-16"
 >
     <div class="h-[120dvh]"></div>
-    <div class="flex flex-col w-full h-full">
+    <div id="program" class="flex flex-col w-full h-full">
         <h1
             class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl backdrop-blur-xl w-fit border-2 border-black p-3 sm:p-4 lg:p-5 mb-8 sm:mb-10 lg:mb-5"
         >
