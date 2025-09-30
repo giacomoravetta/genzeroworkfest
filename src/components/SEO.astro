@@ -17,8 +17,10 @@ const {
     keywords = "generazione zero, workfest, festival lavoro, creatività, dungeons dragons, laboratori, dibattiti sociali, musica dal vivo, integrazione, antimafia",
 } = Astro.props;
 
-const canonicalUrl = new URL(url, Astro.site).href;
-const imageUrl = new URL(image, Astro.site).href;
+const canonicalUrl = Astro.site ? new URL(url, Astro.site).href : url;
+const imageUrl = Astro.site
+    ? new URL(image, Astro.site).href
+    : `https://genzeroworkfest.com${image}`;
 ---
 
 <!-- Primary Meta Tags -->
