@@ -3,12 +3,9 @@ import Logo from "./Logo.astro";
 import Footer from "./Footer.astro";
 import ProgramSchedule from "./ProgramSchedule.svelte";
 import Marquee from "./Marquee.svelte";
-import { getProgramData } from "../lib/notion";
 
-const { env } = Astro.locals.runtime || { env: {} };
-const programData = await getProgramData(env);
-console.log("🔷 [SERVER] Program data fetched at:", new Date().toISOString());
-console.log("🔷 [SERVER] Program sections count:", programData.length);
+// No server-side data fetching - all data will be fetched client-side
+const programData = [];
 ---
 
 <div
@@ -560,84 +557,6 @@ console.log("🔷 [SERVER] Program sections count:", programData.length);
                         shareMenu.classList.add("hidden");
                     });
             }
-
-            // Fetch program data on page load
-            async function fetchProgramData() {
-                try {
-                    const fetchTime = new Date().toISOString();
-                    console.log(
-                        "🔄 [CLIENT] Fetching fresh program data at:",
-                        fetchTime,
-                    );
-
-                    // Add timestamp to prevent caching
-                    const timestamp = new Date().getTime();
-                    const url = `/api/program-data?t=${timestamp}`;
-                    console.log("🔄 [CLIENT] Fetch URL:", url);
-
-                    const response = await fetch(url, {
-                        cache: "no-store",
-                        headers: {
-                            "Cache-Control":
-                                "no-cache, no-store, must-revalidate",
-                            Pragma: "no-cache",
-                            Expires: "0",
-                        },
-                    });
-
-                    console.log(
-                        "🔄 [CLIENT] Response status:",
-                        response.status,
-                    );
-                    console.log("🔄 [CLIENT] Response headers:", {
-                        cacheControl: response.headers.get("Cache-Control"),
-                        contentType: response.headers.get("Content-Type"),
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(
-                            `HTTP error! status: ${response.status}`,
-                        );
-                    }
-
-                    const data = await response.json();
-                    console.log("🔄 [CLIENT] Data received:", {
-                        isArray: Array.isArray(data),
-                        length: data?.length || 0,
-                        fetchedAt: fetchTime,
-                    });
-
-                    if (data && Array.isArray(data) && data.length > 0) {
-                        // Dispatch custom event with the fetched data
-                        window.dispatchEvent(
-                            new CustomEvent("programDataUpdated", {
-                                detail: data,
-                            }),
-                        );
-                        console.log(
-                            "✅ [CLIENT] Program data fetched and event dispatched. Sections:",
-                            data.length,
-                        );
-                        console.log(
-                            "✅ [CLIENT] First section title:",
-                            data[0]?.title,
-                        );
-                    } else {
-                        console.log(
-                            "⚠️ [CLIENT] No program data received from API",
-                        );
-                    }
-                } catch (error) {
-                    console.error(
-                        "❌ [CLIENT] Failed to fetch program data:",
-                        error,
-                    );
-                }
-            }
-
-            // Fetch data when page loads
-            console.log("🚀 [CLIENT] Page loaded, initiating data fetch...");
-            fetchProgramData();
         });
     </script>
 

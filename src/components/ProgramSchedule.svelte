@@ -3,9 +3,12 @@
     import Island from "./Island.svelte";
     import type { ProgramSection } from "../lib/notion";
 
-    // Props: dati dal database Notion con fallback ai dati hardcoded
+    // Props: initial data (empty for client-side only fetching)
     let { programSections = [] }: { programSections?: ProgramSection[] } =
         $props();
+
+    let isLoading = $state(true);
+    let error = $state<string | null>(null);
 
     // Dati di fallback se Notion non è configurato o fallisce
     const fallbackData: ProgramSection[] = [
@@ -114,57 +117,60 @@
         },
     ];
 
-    // Usa i dati da Notion se disponibili, altrimenti usa il fallback
-    let displayData = $state(
-        programSections.length > 0 ? programSections : fallbackData,
-    );
+    // Start with fallback data, will be replaced by fresh data from API
+    let displayData = $state(fallbackData);
 
-    // Listen for program data updates from client-side fetch
-    onMount(() => {
-        console.log("🎯 [SVELTE] Component mounted with initial data:", {
-            sections: programSections.length,
-            usingFallback: programSections.length === 0,
-        });
+    // Fetch data directly on mount
+    onMount(async () => {
+        console.log("🎯 [SVELTE] Component mounted, fetching data...");
 
-        const handleProgramDataUpdate = (event: CustomEvent) => {
-            const newData = event.detail;
-            console.log("📥 [SVELTE] Received programDataUpdated event:", {
-                hasData: !!newData,
-                isArray: Array.isArray(newData),
-                length: newData?.length || 0,
+        try {
+            const timestamp = new Date().getTime();
+            const url = `/api/program-data?t=${timestamp}`;
+
+            const response = await fetch(url, {
+                cache: "no-store",
+                headers: {
+                    "Cache-Control": "no-cache, no-store, must-revalidate",
+                    Pragma: "no-cache",
+                    Expires: "0",
+                },
             });
 
-            if (newData && Array.isArray(newData) && newData.length > 0) {
-                const oldSections = displayData.length;
-                displayData = newData;
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log("📥 [SVELTE] Data received:", {
+                isArray: Array.isArray(data),
+                length: data?.length || 0,
+            });
+
+            if (data && Array.isArray(data) && data.length > 0) {
+                displayData = data;
                 console.log(
-                    "✅ [SVELTE] Program data updated! Old sections:",
-                    oldSections,
-                    "New sections:",
-                    newData.length,
+                    "✅ [SVELTE] Program data loaded! Sections:",
+                    data.length,
                 );
                 console.log(
                     "✅ [SVELTE] First section:",
-                    newData[0]?.title,
+                    data[0]?.title,
                     "Events:",
-                    newData[0]?.events?.length,
+                    data[0]?.events?.length,
                 );
+                error = null;
             } else {
-                console.warn("⚠️ [SVELTE] Invalid data received from event");
+                console.warn("⚠️ [SVELTE] No data received, using fallback");
+                error = "No data available";
             }
-        };
-
-        window.addEventListener(
-            "programDataUpdated",
-            handleProgramDataUpdate as EventListener,
-        );
-
-        return () => {
-            window.removeEventListener(
-                "programDataUpdated",
-                handleProgramDataUpdate as EventListener,
-            );
-        };
+        } catch (err) {
+            console.error("❌ [SVELTE] Failed to fetch program data:", err);
+            error = err instanceof Error ? err.message : "Failed to load data";
+            // Keep fallback data on error
+        } finally {
+            isLoading = false;
+        }
     });
 </script>
 
@@ -179,18 +185,51 @@
             Programma
         </h1>
 
-        <div class="flex flex-col gap-8 sm:gap-10 lg:gap-5">
-            {#each displayData as section}
-                <div class="flex w-full lg:basis-1/3 h-fit">
-                    <Island
-                        content={{
-                            title: section.title,
-                            description: section.description,
-                            events: section.events,
-                        }}
-                    />
+        {#if isLoading}
+            <div class="flex justify-center items-center py-12">
+                <div class="text-center">
+                    <div
+                        class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-black"
+                    ></div>
+                    <p class="mt-4 text-gray-600">Caricamento programma...</p>
                 </div>
-            {/each}
-        </div>
+            </div>
+        {:else if error}
+            <div
+                class="bg-yellow-50 border-2 border-yellow-400 rounded-lg p-6 mb-8"
+            >
+                <p class="text-yellow-800">
+                    ⚠️ Impossibile caricare i dati aggiornati. Mostrando
+                    programma di base.
+                </p>
+            </div>
+            <div class="flex flex-col gap-8 sm:gap-10 lg:gap-5">
+                {#each displayData as section}
+                    <div class="flex w-full lg:basis-1/3 h-fit">
+                        <Island
+                            content={{
+                                title: section.title,
+                                description: section.description,
+                                events: section.events,
+                            }}
+                        />
+                    </div>
+                {/each}
+            </div>
+        {:else}
+            <div class="flex flex-col gap-8 sm:gap-10 lg:gap-5">
+                {#each displayData as section}
+                    <div class="flex w-full lg:basis-1/3 h-fit">
+                        <Island
+                            content={{
+                                title: section.title,
+                                description: section.description,
+                                events: section.events,
+                            }}
+                        />
+                    </div>
+                {/each}
+            </div>
+        {/if}
     </div>
 </section>
