@@ -12,6 +12,7 @@
 
     $effect(() => {
         if (data) {
+            console.log("Program data loaded:", data);
             displayData = data;
             isLoading = false;
 
