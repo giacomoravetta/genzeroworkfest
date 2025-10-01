@@ -3,6 +3,9 @@ import Logo from "./Logo.astro";
 import Footer from "./Footer.astro";
 import ProgramScheduleWrapper from "./ProgramScheduleWrapper.astro";
 import Marquee from "./Marquee.svelte";
+
+// Disable prerendering to allow fresh data from Notion
+export const prerender = false;
 ---
 
 <div

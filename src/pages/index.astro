@@ -5,6 +5,9 @@ import Info from "../components/Info.astro";
 import FestivalSpirit from "../components/FestivalSpirit.svelte";
 import LoadingScreen from "../components/LoadingScreen.svelte";
 
+// Disable prerendering to ensure fresh data from Notion
+export const prerender = false;
+
 const seoData = {
     title: "Generazione Zero Workfest",
     description:

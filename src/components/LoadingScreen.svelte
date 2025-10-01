@@ -147,6 +147,16 @@
             isProgramDataLoaded = true;
         });
 
+        // Fallback: If program data event never fires, hide loading screen anyway after 5 seconds
+        setTimeout(() => {
+            if (!isProgramDataLoaded) {
+                console.warn(
+                    "Program data event not received, hiding loading screen anyway",
+                );
+                isProgramDataLoaded = true;
+            }
+        }, 5000);
+
         // Cleanup
         return () => {
             window.removeEventListener("resize", handleResize);

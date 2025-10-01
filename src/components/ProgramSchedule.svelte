@@ -12,12 +12,14 @@
 
     $effect(() => {
         if (data) {
-            console.log("Program data loaded:", data);
             displayData = data;
             isLoading = false;
 
-            // Notify that program data is loaded
-            window.dispatchEvent(new CustomEvent("programDataLoaded"));
+            // Notify that program data is loaded with a small delay
+            // to ensure LoadingScreen is ready to listen
+            setTimeout(() => {
+                window.dispatchEvent(new CustomEvent("programDataLoaded"));
+            }, 100);
         }
     });
 </script>

@@ -1,10 +1,15 @@
 ---
 import ProgramSchedule from "./ProgramSchedule.svelte";
 import { getProgramData } from "../lib/notion";
-// const notionApiKey = import.meta.env.NOTION_API_KEY;
-// const notionDatabaseId = import.meta.env.NOTION_DATABASE_ID;
-const notionApiKey = Astro.locals.runtime.env.NOTION_API_KEY;
-const notionDatabaseId = Astro.locals.runtime.env.NOTION_DATABASE_ID;
+
+// Disable prerendering to get fresh data on each request
+export const prerender = false;
+
+const notionApiKey =
+    Astro.locals.runtime?.env?.NOTION_API_KEY || import.meta.env.NOTION_API_KEY;
+const notionDatabaseId =
+    Astro.locals.runtime?.env?.NOTION_DATABASE_ID ||
+    import.meta.env.NOTION_DATABASE_ID;
 
 const data = await getProgramData(notionApiKey, notionDatabaseId);
 ---
