@@ -3,7 +3,7 @@
     import * as THREE from "three";
     import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
-    let container: HTMLDivElement;
+    let container: HTMLDivElement | undefined = undefined;
     let scene: THREE.Scene;
     let camera: THREE.PerspectiveCamera;
     let renderer: THREE.WebGLRenderer;
@@ -12,6 +12,7 @@
     let isVisible = $state(true);
     let isModelLoaded = $state(false);
     let isPageLoaded = $state(false);
+    let isProgramDataLoaded = $state(false);
 
     onMount(() => {
         // Scene setup
@@ -33,7 +34,9 @@
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(window.devicePixelRatio);
-        container.appendChild(renderer.domElement);
+        if (container) {
+            container.appendChild(renderer.domElement);
+        }
 
         // Lighting
         const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
@@ -139,6 +142,11 @@
             });
         }
 
+        // Listen for program data loaded event
+        window.addEventListener("programDataLoaded", () => {
+            isProgramDataLoaded = true;
+        });
+
         // Cleanup
         return () => {
             window.removeEventListener("resize", handleResize);
@@ -158,9 +166,9 @@
         };
     });
 
-    // Hide loading screen when both model and page are loaded
+    // Hide loading screen when model, page, and program data are all loaded
     $effect(() => {
-        if (isModelLoaded && isPageLoaded) {
+        if (isModelLoaded && isPageLoaded && isProgramDataLoaded) {
             // Wait a bit to show the model, then fade out
             setTimeout(() => {
                 isVisible = false;

@@ -2,20 +2,38 @@
     import { onMount } from "svelte";
     import Island from "./Island.svelte";
 
-    // Props: initial data from Astro component (server-side fetched)
-    let { programSections = [] }: { programSections?: ProgramSection[] } =
-        $props();
-
     // Local state for loading and error
     let isLoading = $state(true);
     let error = $state<string | null>(null);
+    let displayData = $state<ProgramSection[]>([]);
 
-    let displayData = $state(programSections);
+    // Fetch data from API on mount (client-side)
+    onMount(async () => {
+        try {
+            const response = await fetch("/api/program.json", {
+                cache: "no-store",
+                headers: {
+                    "Cache-Control": "no-cache",
+                },
+            });
 
-    // Update loading state when displayData changes
-    $effect(() => {
-        if (displayData && displayData.length > 0) {
+            if (!response.ok) {
+                throw new Error("Failed to fetch program data");
+            }
+
+            const data = await response.json();
+            displayData = data;
             isLoading = false;
+
+            // Notify that program data is loaded
+            window.dispatchEvent(new CustomEvent("programDataLoaded"));
+        } catch (err) {
+            console.error("Error fetching program:", err);
+            error = err instanceof Error ? err.message : "Unknown error";
+            isLoading = false;
+
+            // Still dispatch event even on error to not block loading screen
+            window.dispatchEvent(new CustomEvent("programDataLoaded"));
         }
     });
 </script>
@@ -32,22 +50,17 @@
             class="bg-yellow-50 border-2 border-yellow-400 rounded-lg p-6 mb-8"
         >
             <p class="text-yellow-800">
-                ⚠️ Impossibile caricare i dati aggiornati. Mostrando programma
-                di base.
+                ⚠️ Impossibile caricare i dati aggiornati. Errore: {error}
             </p>
         </div>
-        <div class="flex flex-col gap-8 sm:gap-10 lg:gap-5">
-            {#each displayData as section}
-                <div class="flex w-full lg:basis-1/3 h-fit">
-                    <Island
-                        content={{
-                            title: section.title,
-                            description: section.description,
-                            events: section.events,
-                        }}
-                    />
-                </div>
-            {/each}
+    {:else if isLoading}
+        <div class="flex justify-center items-center py-12">
+            <div class="text-center">
+                <div
+                    class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-black"
+                ></div>
+                <p class="mt-4 text-gray-600">Caricamento programma...</p>
+            </div>
         </div>
     {:else}
         <div class="flex flex-col gap-8 sm:gap-10 lg:gap-5">
