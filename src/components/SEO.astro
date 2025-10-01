@@ -160,10 +160,5 @@ const imageUrl = Astro.site
     }
 </script>
 
-<!-- Preload critical resources -->
-<link rel="preload" href="/Logo.svg" as="image" type="image/svg+xml" />
-<link rel="preload" href="/W.svg" as="image" type="image/svg+xml" />
-<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-
 <!-- Prefetch for social sharing -->
 <link rel="prefetch" href={imageUrl} />

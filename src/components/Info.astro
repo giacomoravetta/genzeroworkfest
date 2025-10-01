@@ -1,11 +1,8 @@
 ---
 import Logo from "./Logo.astro";
 import Footer from "./Footer.astro";
-import ProgramSchedule from "./ProgramSchedule.svelte";
+import ProgramScheduleWrapper from "./ProgramScheduleWrapper.astro";
 import Marquee from "./Marquee.svelte";
-
-// No server-side data fetching - all data will be fetched client-side
-const programData = [];
 ---
 
 <div
@@ -200,9 +197,7 @@ const programData = [];
     <main
         class="w-full h-full flex flex-col gap-8 sm:gap-12 lg:gap-16 overflow-y-scroll"
     >
-        <ProgramSchedule client:load programSections={programData} />
-
-        <!-- Footer Section -->
+        <ProgramScheduleWrapper />
 
         <Footer />
     </main>
@@ -313,341 +308,341 @@ const programData = [];
             </button>
         </div>
     </div>
-
-    <script>
-        import { gsap } from "gsap";
-
-        document.addEventListener("DOMContentLoaded", function () {
-            // Mobile menu functionality
-            const mobileMenuBtn = document.querySelector(".mobile-menu-btn");
-            const mobileMenu = document.querySelector(".mobile-menu");
-            const hamburgerIcon = mobileMenuBtn?.querySelector("svg");
-            let isMenuOpen = false;
-
-            if (mobileMenuBtn && mobileMenu && hamburgerIcon) {
-                mobileMenuBtn.addEventListener("click", function (e) {
-                    e.stopPropagation();
-                    isMenuOpen = !isMenuOpen;
-
-                    if (isMenuOpen) {
-                        // Show menu
-                        mobileMenu.classList.remove("hidden");
-
-                        // Animate menu entrance
-                        gsap.fromTo(
-                            mobileMenu,
-                            {
-                                opacity: 0,
-                                y: -30,
-                                scale: 0.95,
-                            },
-                            {
-                                opacity: 1,
-                                y: 0,
-                                scale: 1,
-                                duration: 0.3,
-                                ease: "power2.out",
-                            },
-                        );
-
-                        // Animate hamburger to X
-                        gsap.to(hamburgerIcon, {
-                            rotation: 90,
-                            duration: 0.3,
-                            ease: "power2.out",
-                        });
-                    } else {
-                        // Hide menu
-                        gsap.to(mobileMenu, {
-                            opacity: 0,
-                            y: -20,
-                            scale: 0.95,
-                            duration: 0.2,
-                            ease: "power2.in",
-                            onComplete: () => {
-                                mobileMenu.classList.add("hidden");
-                            },
-                        });
-
-                        // Animate X back to hamburger
-                        gsap.to(hamburgerIcon, {
-                            rotation: 0,
-                            duration: 0.3,
-                            ease: "power2.out",
-                        });
-                    }
-                });
-
-                // Close menu when clicking outside
-                document.addEventListener("click", function (e) {
-                    if (
-                        isMenuOpen &&
-                        !mobileMenu.contains(e.target as Node) &&
-                        !mobileMenuBtn.contains(e.target as Node)
-                    ) {
-                        isMenuOpen = false;
-                        gsap.to(mobileMenu, {
-                            opacity: 0,
-                            y: -20,
-                            scale: 0.95,
-                            duration: 0.2,
-                            ease: "power2.in",
-                            onComplete: () => {
-                                mobileMenu.classList.add("hidden");
-                            },
-                        });
-
-                        gsap.to(hamburgerIcon, {
-                            rotation: 0,
-                            duration: 0.3,
-                            ease: "power2.out",
-                        });
-                    }
-                });
-
-                // Close menu when clicking nav links
-                const mobileNavLinks =
-                    document.querySelectorAll(".mobile-nav-link");
-                mobileNavLinks.forEach((link) => {
-                    link.addEventListener("click", () => {
-                        isMenuOpen = false;
-                        gsap.to(mobileMenu, {
-                            opacity: 0,
-                            y: -20,
-                            scale: 0.95,
-                            duration: 0.2,
-                            ease: "power2.in",
-                            onComplete: () => {
-                                mobileMenu.classList.add("hidden");
-                            },
-                        });
-
-                        gsap.to(hamburgerIcon, {
-                            rotation: 0,
-                            duration: 0.3,
-                            ease: "power2.out",
-                        });
-                    });
-                });
-            }
-
-            // Share button functionality
-            const shareButton = document.querySelector(".share-button");
-            const shareBtn = document.getElementById("shareBtn");
-            const shareMenu = document.getElementById("shareMenu");
-
-            const shareData = {
-                title: "Generazione Zero Workfest",
-                text: "Un festival per ripensare il rapporto con il lavoro attraverso creatività, socializzazione e confronto. 🎭✨",
-                url: "https://genzeroworkfest.it",
-            };
-
-            if (shareButton) {
-                // Entry animation
-                gsap.from(shareButton, {
-                    scale: 0,
-                    rotation: 180,
-                    duration: 0.8,
-                    ease: "back.out(1.7)",
-                    delay: 1,
-                });
-
-                // Floating animation
-                gsap.to(shareButton, {
-                    y: -10,
-                    duration: 2,
-                    ease: "power2.inOut",
-                    yoyo: true,
-                    repeat: -1,
-                });
-
-                // Hover animations
-                shareButton.addEventListener("mouseenter", function () {
-                    gsap.to(shareButton, {
-                        scale: 1.1,
-                        duration: 0.3,
-                        ease: "power2.out",
-                    });
-                });
-
-                shareButton.addEventListener("mouseleave", function () {
-                    gsap.to(shareButton, {
-                        scale: 1,
-                        duration: 0.3,
-                        ease: "power2.out",
-                    });
-                });
-
-                // Share button click
-                shareBtn.addEventListener("click", async function (e) {
-                    e.stopPropagation();
-
-                    // Try Web Share API first
-                    if (navigator.share) {
-                        try {
-                            await navigator.share(shareData);
-                            return;
-                        } catch (err) {
-                            console.log("Web Share API failed, showing menu");
-                        }
-                    }
-
-                    // Fallback: show share menu
-                    shareMenu.classList.toggle("hidden");
-                });
-
-                // Close menu when clicking outside
-                document.addEventListener("click", function (e) {
-                    if (!shareButton.contains(e.target)) {
-                        shareMenu.classList.add("hidden");
-                    }
-                });
-
-                // Share options
-                document
-                    .getElementById("whatsappShare")
-                    .addEventListener("click", function () {
-                        const url = `https://wa.me/?text=${encodeURIComponent(shareData.text + " " + shareData.url)}`;
-                        window.open(url, "_blank");
-                        shareMenu.classList.add("hidden");
-                    });
-
-                document
-                    .getElementById("telegramShare")
-                    .addEventListener("click", function () {
-                        const url = `https://t.me/share/url?url=${encodeURIComponent(shareData.url)}&text=${encodeURIComponent(shareData.text)}`;
-                        window.open(url, "_blank");
-                        shareMenu.classList.add("hidden");
-                    });
-
-                document
-                    .getElementById("facebookShare")
-                    .addEventListener("click", function () {
-                        const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareData.url)}`;
-                        window.open(url, "_blank");
-                        shareMenu.classList.add("hidden");
-                    });
-
-                document
-                    .getElementById("twitterShare")
-                    .addEventListener("click", function () {
-                        const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareData.text)}&url=${encodeURIComponent(shareData.url)}`;
-                        window.open(url, "_blank");
-                        shareMenu.classList.add("hidden");
-                    });
-
-                document
-                    .getElementById("copyLink")
-                    .addEventListener("click", async function () {
-                        try {
-                            await navigator.clipboard.writeText(shareData.url);
-                            // Show feedback
-                            const button = this;
-                            const originalText =
-                                button.querySelector("span").textContent;
-                            button.querySelector("span").textContent =
-                                "Link copiato!";
-                            setTimeout(() => {
-                                button.querySelector("span").textContent =
-                                    originalText;
-                            }, 2000);
-                        } catch (err) {
-                            console.error("Failed to copy link:", err);
-                        }
-                        shareMenu.classList.add("hidden");
-                    });
-            }
-        });
-    </script>
-
-    <style>
-        .logo-wrapper {
-            cursor: pointer;
-            transform-origin: center center;
-            transition: filter 0.3s ease;
-            display: flex;
-            align-items: center;
-            height: 100%;
-        }
-
-        .logo-wrapper svg {
-            height: 100%;
-            width: auto;
-            max-width: 100%;
-        }
-
-        .share-button {
-            transform-origin: center center;
-        }
-
-        .share-link {
-            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
-        }
-
-        .share-link:hover {
-            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.6);
-            transform: translateY(-2px);
-        }
-
-        .share-menu {
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .share-option:hover {
-            background-color: #f3f4f6;
-        }
-
-        /* Navigation hover underline effect */
-        .nav-link::after {
-            content: "";
-            position: absolute;
-            bottom: -4px;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: #000;
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        /* Mobile menu responsive styles */
-        .mobile-menu {
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        .mobile-menu nav {
-            max-height: calc(100vh - 2rem);
-            overflow-y: auto;
-        }
-
-        .mobile-nav-link {
-            transform: translateX(0);
-            transition: all 0.3s ease;
-        }
-
-        .mobile-nav-link:hover {
-            transform: translateX(4px);
-        }
-
-        /* Smooth hamburger icon rotation */
-        .mobile-menu-btn svg {
-            transform-origin: center;
-            will-change: transform;
-        }
-
-        /* Ensure proper z-index stacking */
-        .mobile-menu {
-            z-index: 100;
-        }
-
-        .mobile-menu-btn {
-            z-index: 101;
-        }
-    </style>
 </div>
+
+<script>
+    import { gsap } from "gsap";
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Mobile menu functionality
+        const mobileMenuBtn = document.querySelector(".mobile-menu-btn");
+        const mobileMenu = document.querySelector(".mobile-menu");
+        const hamburgerIcon = mobileMenuBtn?.querySelector("svg");
+        let isMenuOpen = false;
+
+        if (mobileMenuBtn && mobileMenu && hamburgerIcon) {
+            mobileMenuBtn.addEventListener("click", function (e) {
+                e.stopPropagation();
+                isMenuOpen = !isMenuOpen;
+
+                if (isMenuOpen) {
+                    // Show menu
+                    mobileMenu.classList.remove("hidden");
+
+                    // Animate menu entrance
+                    gsap.fromTo(
+                        mobileMenu,
+                        {
+                            opacity: 0,
+                            y: -30,
+                            scale: 0.95,
+                        },
+                        {
+                            opacity: 1,
+                            y: 0,
+                            scale: 1,
+                            duration: 0.3,
+                            ease: "power2.out",
+                        },
+                    );
+
+                    // Animate hamburger to X
+                    gsap.to(hamburgerIcon, {
+                        rotation: 90,
+                        duration: 0.3,
+                        ease: "power2.out",
+                    });
+                } else {
+                    // Hide menu
+                    gsap.to(mobileMenu, {
+                        opacity: 0,
+                        y: -20,
+                        scale: 0.95,
+                        duration: 0.2,
+                        ease: "power2.in",
+                        onComplete: () => {
+                            mobileMenu.classList.add("hidden");
+                        },
+                    });
+
+                    // Animate X back to hamburger
+                    gsap.to(hamburgerIcon, {
+                        rotation: 0,
+                        duration: 0.3,
+                        ease: "power2.out",
+                    });
+                }
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener("click", function (e) {
+                if (
+                    isMenuOpen &&
+                    !mobileMenu.contains(e.target as Node) &&
+                    !mobileMenuBtn.contains(e.target as Node)
+                ) {
+                    isMenuOpen = false;
+                    gsap.to(mobileMenu, {
+                        opacity: 0,
+                        y: -20,
+                        scale: 0.95,
+                        duration: 0.2,
+                        ease: "power2.in",
+                        onComplete: () => {
+                            mobileMenu.classList.add("hidden");
+                        },
+                    });
+
+                    gsap.to(hamburgerIcon, {
+                        rotation: 0,
+                        duration: 0.3,
+                        ease: "power2.out",
+                    });
+                }
+            });
+
+            // Close menu when clicking nav links
+            const mobileNavLinks =
+                document.querySelectorAll(".mobile-nav-link");
+            mobileNavLinks.forEach((link) => {
+                link.addEventListener("click", () => {
+                    isMenuOpen = false;
+                    gsap.to(mobileMenu, {
+                        opacity: 0,
+                        y: -20,
+                        scale: 0.95,
+                        duration: 0.2,
+                        ease: "power2.in",
+                        onComplete: () => {
+                            mobileMenu.classList.add("hidden");
+                        },
+                    });
+
+                    gsap.to(hamburgerIcon, {
+                        rotation: 0,
+                        duration: 0.3,
+                        ease: "power2.out",
+                    });
+                });
+            });
+        }
+
+        // Share button functionality
+        const shareButton = document.querySelector(".share-button");
+        const shareBtn = document.getElementById("shareBtn");
+        const shareMenu = document.getElementById("shareMenu");
+
+        const shareData = {
+            title: "Generazione Zero Workfest",
+            text: "Un festival per ripensare il rapporto con il lavoro attraverso creatività, socializzazione e confronto. 🎭✨",
+            url: "https://genzeroworkfest.it",
+        };
+
+        if (shareButton) {
+            // Entry animation
+            gsap.from(shareButton, {
+                scale: 0,
+                rotation: 180,
+                duration: 0.8,
+                ease: "back.out(1.7)",
+                delay: 1,
+            });
+
+            // Floating animation
+            gsap.to(shareButton, {
+                y: -10,
+                duration: 2,
+                ease: "power2.inOut",
+                yoyo: true,
+                repeat: -1,
+            });
+
+            // Hover animations
+            shareButton.addEventListener("mouseenter", function () {
+                gsap.to(shareButton, {
+                    scale: 1.1,
+                    duration: 0.3,
+                    ease: "power2.out",
+                });
+            });
+
+            shareButton.addEventListener("mouseleave", function () {
+                gsap.to(shareButton, {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: "power2.out",
+                });
+            });
+
+            // Share button click
+            shareBtn.addEventListener("click", async function (e) {
+                e.stopPropagation();
+
+                // Try Web Share API first
+                if (navigator.share) {
+                    try {
+                        await navigator.share(shareData);
+                        return;
+                    } catch (err) {
+                        console.log("Web Share API failed, showing menu");
+                    }
+                }
+
+                // Fallback: show share menu
+                shareMenu.classList.toggle("hidden");
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener("click", function (e) {
+                if (!shareButton.contains(e.target)) {
+                    shareMenu.classList.add("hidden");
+                }
+            });
+
+            // Share options
+            document
+                .getElementById("whatsappShare")
+                .addEventListener("click", function () {
+                    const url = `https://wa.me/?text=${encodeURIComponent(shareData.text + " " + shareData.url)}`;
+                    window.open(url, "_blank");
+                    shareMenu.classList.add("hidden");
+                });
+
+            document
+                .getElementById("telegramShare")
+                .addEventListener("click", function () {
+                    const url = `https://t.me/share/url?url=${encodeURIComponent(shareData.url)}&text=${encodeURIComponent(shareData.text)}`;
+                    window.open(url, "_blank");
+                    shareMenu.classList.add("hidden");
+                });
+
+            document
+                .getElementById("facebookShare")
+                .addEventListener("click", function () {
+                    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareData.url)}`;
+                    window.open(url, "_blank");
+                    shareMenu.classList.add("hidden");
+                });
+
+            document
+                .getElementById("twitterShare")
+                .addEventListener("click", function () {
+                    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareData.text)}&url=${encodeURIComponent(shareData.url)}`;
+                    window.open(url, "_blank");
+                    shareMenu.classList.add("hidden");
+                });
+
+            document
+                .getElementById("copyLink")
+                .addEventListener("click", async function () {
+                    try {
+                        await navigator.clipboard.writeText(shareData.url);
+                        // Show feedback
+                        const button = this;
+                        const originalText =
+                            button.querySelector("span").textContent;
+                        button.querySelector("span").textContent =
+                            "Link copiato!";
+                        setTimeout(() => {
+                            button.querySelector("span").textContent =
+                                originalText;
+                        }, 2000);
+                    } catch (err) {
+                        console.error("Failed to copy link:", err);
+                    }
+                    shareMenu.classList.add("hidden");
+                });
+        }
+    });
+</script>
+
+<style>
+    .logo-wrapper {
+        cursor: pointer;
+        transform-origin: center center;
+        transition: filter 0.3s ease;
+        display: flex;
+        align-items: center;
+        height: 100%;
+    }
+
+    .logo-wrapper svg {
+        height: 100%;
+        width: auto;
+        max-width: 100%;
+    }
+
+    .share-button {
+        transform-origin: center center;
+    }
+
+    .share-link {
+        box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+    }
+
+    .share-link:hover {
+        box-shadow: 0 6px 20px rgba(168, 85, 247, 0.6);
+        transform: translateY(-2px);
+    }
+
+    .share-menu {
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .share-option:hover {
+        background-color: #f3f4f6;
+    }
+
+    /* Navigation hover underline effect */
+    .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: #000;
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+    }
+
+    .nav-link:hover::after {
+        width: 100%;
+    }
+
+    /* Mobile menu responsive styles */
+    .mobile-menu {
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+
+    .mobile-menu nav {
+        max-height: calc(100vh - 2rem);
+        overflow-y: auto;
+    }
+
+    .mobile-nav-link {
+        transform: translateX(0);
+        transition: all 0.3s ease;
+    }
+
+    .mobile-nav-link:hover {
+        transform: translateX(4px);
+    }
+
+    /* Smooth hamburger icon rotation */
+    .mobile-menu-btn svg {
+        transform-origin: center;
+        will-change: transform;
+    }
+
+    /* Ensure proper z-index stacking */
+    .mobile-menu {
+        z-index: 100;
+    }
+
+    .mobile-menu-btn {
+        z-index: 101;
+    }
+</style>

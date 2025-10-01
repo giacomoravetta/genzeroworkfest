@@ -9,11 +9,11 @@
             <TileColor>#000000</TileColor>
         </tile>
         <notification>
-            <polling-uri src="https://genzeroworkfest.com/notifications/poll1.xml"/>
-            <polling-uri src="https://genzeroworkfest.com/notifications/poll2.xml"/>
-            <polling-uri src="https://genzeroworkfest.com/notifications/poll3.xml"/>
-            <polling-uri src="https://genzeroworkfest.com/notifications/poll4.xml"/>
-            <polling-uri src="https://genzeroworkfest.com/notifications/poll5.xml"/>
+            <polling-uri src="https://genzeroworkfest.it/notifications/poll1.xml"/>
+            <polling-uri src="https://genzeroworkfest.it/notifications/poll2.xml"/>
+            <polling-uri src="https://genzeroworkfest.it/notifications/poll3.xml"/>
+            <polling-uri src="https://genzeroworkfest.it/notifications/poll4.xml"/>
+            <polling-uri src="https://genzeroworkfest.it/notifications/poll5.xml"/>
             <frequency>30</frequency>
             <cycle>1</cycle>
         </notification>
