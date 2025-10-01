@@ -24,8 +24,28 @@ const seoData = {
     image={seoData.image}
 >
     <LoadingScreen client:only="svelte" />
-    <div class="relative">
+    <div id="main-content" class="relative opacity-0">
         <FestivalSpirit client:load />
         <Info />
     </div>
 </Layout>
+
+<style>
+    #main-content {
+        transition: opacity 0.7s ease-in-out;
+    }
+
+    #main-content.loaded {
+        opacity: 1;
+    }
+</style>
+
+<script>
+    // Show main content after loading screen is done
+    window.addEventListener("loadingComplete", () => {
+        const mainContent = document.getElementById("main-content");
+        if (mainContent) {
+            mainContent.classList.add("loaded");
+        }
+    });
+</script>

@@ -2,7 +2,7 @@
     import { onMount } from "svelte";
     import Island from "./Island.svelte";
 
-    // Props: initial data (empty for client-side only fetching)
+    // Props: initial data from Astro component (server-side fetched)
     let { programSections = [] }: { programSections?: ProgramSection[] } =
         $props();
 

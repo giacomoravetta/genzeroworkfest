@@ -164,6 +164,11 @@
             // Wait a bit to show the model, then fade out
             setTimeout(() => {
                 isVisible = false;
+
+                // Dispatch custom event to notify page that loading is complete
+                setTimeout(() => {
+                    window.dispatchEvent(new CustomEvent("loadingComplete"));
+                }, 700); // Match the fade-out transition duration
             }, 500);
         }
     });
