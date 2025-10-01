@@ -11,7 +11,7 @@
   "scope": "/",
   "icons": [
     {
-      "src": "/favicon.svg",
+      "src": "/w-h.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
@@ -40,7 +40,7 @@
       "url": "/#program",
       "icons": [
         {
-          "src": "/favicon.svg",
+          "src": "/w-h.svg",
           "sizes": "192x192"
         }
       ]
