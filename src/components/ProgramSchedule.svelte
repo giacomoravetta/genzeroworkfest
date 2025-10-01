@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { onMount } from "svelte";
     import Island from "./Island.svelte";
     import type { ProgramSection } from "../lib/notion";
 
@@ -114,8 +115,32 @@
     ];
 
     // Usa i dati da Notion se disponibili, altrimenti usa il fallback
-    const displayData =
-        programSections.length > 0 ? programSections : fallbackData;
+    let displayData = $state(
+        programSections.length > 0 ? programSections : fallbackData,
+    );
+
+    // Listen for program data updates from client-side fetch
+    onMount(() => {
+        const handleProgramDataUpdate = (event: CustomEvent) => {
+            const newData = event.detail;
+            if (newData && Array.isArray(newData) && newData.length > 0) {
+                displayData = newData;
+                console.log("✅ Program data updated from client fetch");
+            }
+        };
+
+        window.addEventListener(
+            "programDataUpdated",
+            handleProgramDataUpdate as EventListener,
+        );
+
+        return () => {
+            window.removeEventListener(
+                "programDataUpdated",
+                handleProgramDataUpdate as EventListener,
+            );
+        };
+    });
 </script>
 
 <section

@@ -559,6 +559,41 @@ console.log(programData);
                         shareMenu.classList.add("hidden");
                     });
             }
+
+            // Fetch program data on page load
+            async function fetchProgramData() {
+                try {
+                    console.log("🔄 Fetching fresh program data...");
+                    const response = await fetch("/api/program-data");
+
+                    if (!response.ok) {
+                        throw new Error(
+                            `HTTP error! status: ${response.status}`,
+                        );
+                    }
+
+                    const data = await response.json();
+
+                    if (data && Array.isArray(data) && data.length > 0) {
+                        // Dispatch custom event with the fetched data
+                        window.dispatchEvent(
+                            new CustomEvent("programDataUpdated", {
+                                detail: data,
+                            }),
+                        );
+                        console.log(
+                            "✅ Program data fetched and event dispatched",
+                        );
+                    } else {
+                        console.log("⚠️ No program data received from API");
+                    }
+                } catch (error) {
+                    console.error("❌ Failed to fetch program data:", error);
+                }
+            }
+
+            // Fetch data when page loads
+            fetchProgramData();
         });
     </script>
 
