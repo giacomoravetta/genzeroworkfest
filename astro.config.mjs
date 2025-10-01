@@ -7,9 +7,9 @@ import svelte from "@astrojs/svelte";
 // https://astro.build/config
 export default defineConfig({
   site: "https://genzeroworkfest.it",
+  output: "server",
   adapter: cloudflare({
-    mode: "directory",
-    functionPerRoute: false,
+    imageService: "passthrough",
   }),
   integrations: [svelte()],
   vite: {
