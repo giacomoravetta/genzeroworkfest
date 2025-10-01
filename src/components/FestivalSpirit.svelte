@@ -154,7 +154,7 @@
 </script>
 
 <section
-    class="w-[100dvw] h-[100dvh] relative bg-[#81FBF5] flex justify-center items-center p-4"
+    class="w-auto h-[100dvh] relative bg-[#81FBF5] flex justify-center items-center p-4"
 >
     <W />
 </section>

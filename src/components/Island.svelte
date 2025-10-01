@@ -100,24 +100,24 @@
 
         <!-- Fullscreen Content -->
         <div
-            class="min-h-full py-16 px-8 sm:px-12 lg:px-20 flex flex-col justify-center items-center text-center"
+            class="min-h-full py-16 px-8 sm:px-12 lg:px-20 flex flex-col justify-center items-left text-left"
             onclick={(e) => e.stopPropagation()}
         >
             <h1
                 id="modal-title"
-                class="w-full text-4xl sm:text-6xl lg:text-8xl font-black text-black mb-8 uppercase tracking-wider text-center w-full"
+                class=" text-4xl sm:text-6xl lg:text-8xl font-black text-black mb-8 uppercase tracking-wider text-left w-full"
             >
                 {displayTitle}
             </h1>
 
             <p
-                class="text-xl sm:text-2xl lg:text-4xl font-bold text-black mb-12 max-w-4xl leading-tight text-center w-full"
+                class="text-xl sm:text-2xl lg:text-4xl font-bold text-black mb-12 leading-tight text-left w-full"
             >
                 {displayDescription}
             </p>
 
             {#if displayEvents.length > 0}
-                <div class="w-full max-w-6xl mx-auto">
+                <div class="w-full max-w-6xl">
                     <h2
                         class="text-2xl sm:text-3xl lg:text-4xl font-black text-black mb-8 uppercase tracking-wider"
                     >
@@ -155,7 +155,7 @@
                 </div>
             {:else}
                 <div
-                    class="text-lg sm:text-xl lg:text-2xl text-black max-w-6xl leading-relaxed text-center w-full"
+                    class="text-lg sm:text-xl lg:text-2xl text-black max-w-6xl leading-relaxed text-left w-full"
                 >
                     {paragraph}
                 </div>
