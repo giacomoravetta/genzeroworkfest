@@ -121,11 +121,36 @@
 
     // Listen for program data updates from client-side fetch
     onMount(() => {
+        console.log("🎯 [SVELTE] Component mounted with initial data:", {
+            sections: programSections.length,
+            usingFallback: programSections.length === 0,
+        });
+
         const handleProgramDataUpdate = (event: CustomEvent) => {
             const newData = event.detail;
+            console.log("📥 [SVELTE] Received programDataUpdated event:", {
+                hasData: !!newData,
+                isArray: Array.isArray(newData),
+                length: newData?.length || 0,
+            });
+
             if (newData && Array.isArray(newData) && newData.length > 0) {
+                const oldSections = displayData.length;
                 displayData = newData;
-                console.log("✅ Program data updated from client fetch");
+                console.log(
+                    "✅ [SVELTE] Program data updated! Old sections:",
+                    oldSections,
+                    "New sections:",
+                    newData.length,
+                );
+                console.log(
+                    "✅ [SVELTE] First section:",
+                    newData[0]?.title,
+                    "Events:",
+                    newData[0]?.events?.length,
+                );
+            } else {
+                console.warn("⚠️ [SVELTE] Invalid data received from event");
             }
         };
 

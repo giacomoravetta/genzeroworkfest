@@ -7,7 +7,8 @@ import { getProgramData } from "../lib/notion";
 
 const { env } = Astro.locals.runtime || { env: {} };
 const programData = await getProgramData(env);
-console.log(programData);
+console.log("🔷 [SERVER] Program data fetched at:", new Date().toISOString());
+console.log("🔷 [SERVER] Program sections count:", programData.length);
 ---
 
 <div
@@ -563,8 +564,35 @@ console.log(programData);
             // Fetch program data on page load
             async function fetchProgramData() {
                 try {
-                    console.log("🔄 Fetching fresh program data...");
-                    const response = await fetch("/api/program-data");
+                    const fetchTime = new Date().toISOString();
+                    console.log(
+                        "🔄 [CLIENT] Fetching fresh program data at:",
+                        fetchTime,
+                    );
+
+                    // Add timestamp to prevent caching
+                    const timestamp = new Date().getTime();
+                    const url = `/api/program-data?t=${timestamp}`;
+                    console.log("🔄 [CLIENT] Fetch URL:", url);
+
+                    const response = await fetch(url, {
+                        cache: "no-store",
+                        headers: {
+                            "Cache-Control":
+                                "no-cache, no-store, must-revalidate",
+                            Pragma: "no-cache",
+                            Expires: "0",
+                        },
+                    });
+
+                    console.log(
+                        "🔄 [CLIENT] Response status:",
+                        response.status,
+                    );
+                    console.log("🔄 [CLIENT] Response headers:", {
+                        cacheControl: response.headers.get("Cache-Control"),
+                        contentType: response.headers.get("Content-Type"),
+                    });
 
                     if (!response.ok) {
                         throw new Error(
@@ -573,6 +601,11 @@ console.log(programData);
                     }
 
                     const data = await response.json();
+                    console.log("🔄 [CLIENT] Data received:", {
+                        isArray: Array.isArray(data),
+                        length: data?.length || 0,
+                        fetchedAt: fetchTime,
+                    });
 
                     if (data && Array.isArray(data) && data.length > 0) {
                         // Dispatch custom event with the fetched data
@@ -582,17 +615,28 @@ console.log(programData);
                             }),
                         );
                         console.log(
-                            "✅ Program data fetched and event dispatched",
+                            "✅ [CLIENT] Program data fetched and event dispatched. Sections:",
+                            data.length,
+                        );
+                        console.log(
+                            "✅ [CLIENT] First section title:",
+                            data[0]?.title,
                         );
                     } else {
-                        console.log("⚠️ No program data received from API");
+                        console.log(
+                            "⚠️ [CLIENT] No program data received from API",
+                        );
                     }
                 } catch (error) {
-                    console.error("❌ Failed to fetch program data:", error);
+                    console.error(
+                        "❌ [CLIENT] Failed to fetch program data:",
+                        error,
+                    );
                 }
             }
 
             // Fetch data when page loads
+            console.log("🚀 [CLIENT] Page loaded, initiating data fetch...");
             fetchProgramData();
         });
     </script>

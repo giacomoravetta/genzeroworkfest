@@ -1,0 +1,42 @@
+# Cloudflare Pages Headers Configuration
+# Prevent caching of the main HTML pages to ensure fresh data on every reload
+
+# API endpoints - never cache
+/api/*
+  Cache-Control: no-cache, no-store, must-revalidate, max-age=0
+  CDN-Cache-Control: no-store
+  Pragma: no-cache
+  Expires: 0
+
+# Main pages - allow short cache but revalidate
+/*
+  Cache-Control: public, max-age=0, must-revalidate
+  CDN-Cache-Control: max-age=0
+
+# Static assets can be cached longer
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.svg
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.jpg
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.jpeg
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.webp
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.woff
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable

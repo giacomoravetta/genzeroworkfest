@@ -3,6 +3,7 @@ import { getProgramData } from "../../lib/notion";
 
 export const GET: APIRoute = async (context) => {
   try {
+    console.log("🌐 [API] Request received at:", new Date().toISOString());
     const { env } = (context.locals as any).runtime || { env: {} };
 
     if (!env.NOTION_API_KEY || !env.NOTION_DATABASE_ID) {
@@ -18,16 +19,26 @@ export const GET: APIRoute = async (context) => {
     }
 
     const programData = await getProgramData(env);
+    console.log(
+      "🌐 [API] Data fetched successfully. Sections:",
+      programData.length,
+    );
+    if (programData.length > 0) {
+      console.log("🌐 [API] First section:", programData[0]?.title);
+    }
 
     return new Response(JSON.stringify(programData), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
-        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "Cache-Control": "no-cache, no-store, must-revalidate, max-age=0",
+        Pragma: "no-cache",
+        Expires: "0",
+        "CDN-Cache-Control": "no-store",
       },
     });
   } catch (error) {
-    console.error("Error fetching program data:", error);
+    console.error("❌ [API] Error fetching program data:", error);
     return new Response(
       JSON.stringify({ error: "Failed to fetch program data" }),
       {
