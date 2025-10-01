@@ -4,7 +4,7 @@ import Footer from "./Footer.astro";
 import ProgramSchedule from "./ProgramSchedule.svelte";
 import Marquee from "./Marquee.svelte";
 import { getProgramData } from "../lib/notion";
-export const prerender = false;
+
 const { env } = Astro.locals.runtime || { env: {} };
 const programData = await getProgramData(env);
 console.log(programData);
