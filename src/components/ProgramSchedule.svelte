@@ -10,10 +10,13 @@
     // Fetch data from API on mount (client-side)
     onMount(async () => {
         try {
-            const response = await fetch("/api/program.json", {
+            // Add timestamp to bypass all caching layers
+            const timestamp = new Date().getTime();
+            const response = await fetch(`/api/program.json?t=${timestamp}`, {
                 cache: "no-store",
                 headers: {
                     "Cache-Control": "no-cache",
+                    Pragma: "no-cache",
                 },
             });
 
