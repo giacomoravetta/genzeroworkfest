@@ -1,6 +1,9 @@
 <script lang="ts">
     import { onMount } from "svelte";
+    import { getProgramData } from "../lib/notion";
     import Island from "./Island.svelte";
+
+    let { env = import.meta.env } = $props();
 
     // Local state for loading and error
     let isLoading = $state(true);
@@ -12,19 +15,13 @@
         try {
             // Add timestamp to bypass all caching layers
             const timestamp = new Date().getTime();
-            const response = await fetch(`/api/program.json?t=${timestamp}`, {
-                cache: "no-store",
-                headers: {
-                    "Cache-Control": "no-cache",
-                    Pragma: "no-cache",
-                },
-            });
+            const response = await getProgramData(env);
 
             if (!response.ok) {
                 throw new Error("Failed to fetch program data");
             }
 
-            const data = await response.json();
+            const data = response;
             displayData = data;
             isLoading = false;
 
