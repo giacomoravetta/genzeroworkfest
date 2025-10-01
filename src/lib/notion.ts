@@ -1,6 +1,11 @@
 // Utility per fetchare dati da Notion usando l'API versione 2025-09-03
 // Questa versione supporta i nuovi "data sources"
 
+interface Env {
+  NOTION_API_KEY?: string;
+  NOTION_DATABASE_ID?: string;
+}
+
 export interface Event {
   time: string;
   title: string;
@@ -38,10 +43,11 @@ function cleanDatabaseId(id: string): string {
 }
 
 // Funzione per fetchare i dati del programma da Notion
-export async function getProgramData(): Promise<ProgramSection[]> {
+export async function getProgramData(env?: Env): Promise<ProgramSection[]> {
   try {
-    const apiKey = import.meta.env.NOTION_API_KEY;
-    let databaseId = import.meta.env.NOTION_DATABASE_ID;
+    const apiKey = env?.NOTION_API_KEY || import.meta.env.NOTION_API_KEY;
+    let databaseId =
+      env?.NOTION_DATABASE_ID || import.meta.env.NOTION_DATABASE_ID;
 
     if (!apiKey || !databaseId) {
       console.warn(
