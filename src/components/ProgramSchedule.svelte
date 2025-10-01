@@ -66,7 +66,7 @@
                     content={{
                         title: "Pomeriggio",
                         description:
-                            "Il momento perfetto per workshops intensivi, sessioni collaborative e networking attivo. Energia e focus per portare avanti progetti concreti.",
+                            "Il momento perfetto per workshop intensivi, sessioni collaborative e networking attivo. Energia e focus per portare avanti progetti concreti.",
                         events: [
                             {
                                 time: "Da definire",

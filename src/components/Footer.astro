@@ -8,12 +8,39 @@
 >
     <div class="max-w-6xl mx-auto">
         <!-- Main Footer Content -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
             <!-- Brand Section -->
             <div class="text-center md:text-left">
                 <h3 class="text-2xl font-bold mb-4 text-black">
                     Generazione Zero WorkFest
                 </h3>
+            </div>
+
+            <!-- Location Section -->
+            <div class="text-center">
+                <h4 class="text-lg font-semibold mb-4 text-black">Dove</h4>
+                <div class="flex flex-col space-y-2">
+                    <p class="text-black font-medium">Parco della Resistenza</p>
+                    <p class="text-black text-sm">Via Avogadro, 103</p>
+                    <p class="text-black text-sm">Caronno Pertusella</p>
+                    <a
+                        href="https://maps.google.com/?q=Parco+della+resistenza,+Via+Avogadro,+103,+Caronno+Pertusella"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center justify-center gap-2 text-black hover:text-gray-700 transition-colors duration-200 hover:underline mt-2"
+                    >
+                        <svg
+                            class="w-4 h-4"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+                            ></path>
+                        </svg>
+                        Visualizza su Google Maps
+                    </a>
+                </div>
             </div>
 
             <!-- Quick Links -->
@@ -126,24 +153,49 @@
             <!-- Credits Component -->
             <div class="mt-8 pt-6 border-t border-black">
                 <div class="text-center">
+                    <!-- Mobile: Stacked layout -->
+                    <div
+                        class="flex flex-col gap-2 text-sm text-black sm:hidden"
+                    >
+                        <div class="flex items-center justify-center gap-2">
+                            <span>Made with</span>
+                            <img
+                                src="/w-h.svg"
+                                alt="W logo"
+                                class="h-[1em] w-auto"
+                            />
+                            <span>by</span>
+                            <a
+                                href="https://giacomoravetta.com"
+                                class="hover:underline transition-all duration-200 hover:text-black"
+                                >Giacomo Ravetta</a
+                            >
+                        </div>
+                        <div>
+                            <span>Graphics by</span>
+                            <a
+                                href="https://www.linkedin.com/in/fabio-montagnoli-23b80954/"
+                                class="hover:underline transition-all duration-200 hover:text-black ml-1"
+                                >Fabio Montagnoli</a
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Desktop: Single line layout -->
                     <p
-                        class="text-sm text-black flex items-center justify-center gap-2"
+                        class="text-sm text-black hidden sm:flex items-center justify-center gap-2"
                     >
                         Made with
-                        <svg
-                            class="w-4 h-4 text-red-500"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                        >
-                            <path
-                                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-                            ></path>
-                        </svg>
+                        <img
+                            src="/w-h.svg"
+                            alt="W logo"
+                            class="h-[1em] w-auto"
+                        />
                         by <a
                             href="https://giacomoravetta.com"
                             class="hover:underline transition-all duration-200 hover:text-black"
                             >Giacomo Ravetta</a
-                        >/ Graphics by <a
+                        > / Graphics by <a
                             href="https://www.linkedin.com/in/fabio-montagnoli-23b80954/"
                             class="hover:underline transition-all duration-200 hover:text-black"
                             >Fabio Montagnoli</a

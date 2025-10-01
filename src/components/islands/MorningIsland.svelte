@@ -88,8 +88,7 @@
                 <div
                     class="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"
                 ></div>
-                <span class="text-amber-700 font-medium"
-                    >Creative Workshops</span
+                <span class="text-amber-700 font-medium">Creative Workshop</span
                 >
             </div>
             <div class="flex items-center space-x-3">

@@ -72,8 +72,8 @@ const imageUrl = Astro.site
 
 <!-- Geo Tags -->
 <meta name="geo.region" content="IT" />
-<meta name="geo.placename" content="Italia" />
-<meta name="ICBM" content="41.8719, 12.5674" />
+<meta name="geo.placename" content="Caronno Pertusella" />
+<meta name="ICBM" content="45.6053, 9.0336" />
 
 <!-- Content Tags -->
 <meta name="rating" content="general" />
@@ -93,11 +93,19 @@ const imageUrl = Astro.site
         "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
         "location": {
             "@type": "Place",
-            "name": "Venue TBD",
+            "name": "Parco della Resistenza",
             "address": {
                 "@type": "PostalAddress",
+                "streetAddress": "Via Avogadro, 103",
+                "addressLocality": "Caronno Pertusella",
                 "addressCountry": "IT"
-            }
+            },
+            "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": 45.6053,
+                "longitude": 9.0336
+            },
+            "url": "https://maps.google.com/?q=Parco+della+resistenza,+Via+Avogadro,+103,+Caronno+Pertusella"
         },
         "organizer": {
             "@type": "Organization",
