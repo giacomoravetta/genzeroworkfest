@@ -1,10 +1,16 @@
 ---
 import ProgramSchedule from "./ProgramSchedule.svelte";
-const { env } = Astro.locals.runtime;
+import { getProgramData } from "../lib/notion";
+// const notionApiKey = import.meta.env.NOTION_API_KEY;
+// const notionDatabaseId = import.meta.env.NOTION_DATABASE_ID;
+const notionApiKey = Astro.locals.runtime.env.NOTION_API_KEY;
+const notionDatabaseId = Astro.locals.runtime.env.NOTION_DATABASE_ID;
+
+const data = await getProgramData(notionApiKey, notionDatabaseId);
 ---
 
 <section
     class="relative flex flex-col justify-center items-start w-full h-auto px-4 sm:px-6 lg:px-40 pt-8 sm:pt-12 lg:pt-16"
 >
-    <ProgramSchedule client:only="svelte" {env} />
+    <ProgramSchedule client:only="svelte" {data} />
 </section>

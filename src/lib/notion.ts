@@ -43,11 +43,13 @@ function cleanDatabaseId(id: string): string {
 }
 
 // Funzione per fetchare i dati del programma da Notion
-export async function getProgramData(env?: Env): Promise<ProgramSection[]> {
+export async function getProgramData(
+  notionApiKey,
+  notionDatabaseId,
+): Promise<ProgramSection[]> {
   try {
-    const apiKey = env?.NOTION_API_KEY || import.meta.env.NOTION_API_KEY;
-    let databaseId =
-      env?.NOTION_DATABASE_ID || import.meta.env.NOTION_DATABASE_ID;
+    const apiKey = notionApiKey;
+    let databaseId = notionDatabaseId;
 
     if (!apiKey || !databaseId) {
       console.warn(

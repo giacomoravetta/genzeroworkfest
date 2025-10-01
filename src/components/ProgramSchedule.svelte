@@ -3,36 +3,19 @@
     import { getProgramData } from "../lib/notion";
     import Island from "./Island.svelte";
 
-    let { env = import.meta.env } = $props();
+    let { data } = $props();
 
     // Local state for loading and error
     let isLoading = $state(true);
     let error = $state<string | null>(null);
     let displayData = $state<ProgramSection[]>([]);
 
-    // Fetch data from API on mount (client-side)
-    onMount(async () => {
-        try {
-            // Add timestamp to bypass all caching layers
-            const timestamp = new Date().getTime();
-            const response = await getProgramData(env);
-
-            if (!response.ok) {
-                throw new Error("Failed to fetch program data");
-            }
-
-            const data = response;
+    $effect(() => {
+        if (data) {
             displayData = data;
             isLoading = false;
 
             // Notify that program data is loaded
-            window.dispatchEvent(new CustomEvent("programDataLoaded"));
-        } catch (err) {
-            console.error("Error fetching program:", err);
-            error = err instanceof Error ? err.message : "Unknown error";
-            isLoading = false;
-
-            // Still dispatch event even on error to not block loading screen
             window.dispatchEvent(new CustomEvent("programDataLoaded"));
         }
     });
