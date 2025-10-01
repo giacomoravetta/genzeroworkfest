@@ -64,6 +64,7 @@ export async function getProgramData(env): Promise<ProgramSection[]> {
           "Notion-Version": "2025-09-03",
           "Content-Type": "application/json",
         },
+        cache: "no-store",
       },
     );
 
@@ -104,6 +105,7 @@ export async function getProgramData(env): Promise<ProgramSection[]> {
             },
           ],
         }),
+        cache: "no-store",
       },
     );
 
