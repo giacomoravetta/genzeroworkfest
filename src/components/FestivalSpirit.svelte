@@ -1,4 +1,5 @@
 <script lang="ts">
+    import W from "../components/W.svelte";
     import { onMount } from "svelte";
     import * as THREE from "three";
     import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
@@ -153,7 +154,7 @@
 </script>
 
 <section
-    class="w-[100dvw] h-[100dvh] relative bg-[#81FBF5] overflow-hidden flex justify-center items-center"
+    class="w-[100dvw] h-[100dvh] relative bg-[#81FBF5] flex justify-center items-center p-4"
 >
-    <div bind:this={container} class="w-full h-full"></div>
+    <W />
 </section>
