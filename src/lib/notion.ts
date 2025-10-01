@@ -1,8 +1,6 @@
 // Utility per fetchare dati da Notion usando l'API versione 2025-09-03
 // Questa versione supporta i nuovi "data sources"
 
-const { env } = Astro.locals.runtime || { env: {} };
-
 export interface Event {
   time: string;
   title: string;
@@ -40,7 +38,7 @@ function cleanDatabaseId(id: string): string {
 }
 
 // Funzione per fetchare i dati del programma da Notion
-export async function getProgramData(): Promise<ProgramSection[]> {
+export async function getProgramData(env): Promise<ProgramSection[]> {
   try {
     const apiKey = env.NOTION_API_KEY;
     let databaseId = env.NOTION_DATABASE_ID;

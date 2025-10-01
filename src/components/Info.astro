@@ -6,7 +6,8 @@ import Marquee from "./Marquee.svelte";
 import { getProgramData } from "../lib/notion";
 
 // Fetch dei dati del programma da Notion
-const programData = await getProgramData();
+const { env } = Astro.locals.runtime || { env: {} };
+const programData = await getProgramData(env);
 console.log(programData);
 ---
 
