@@ -5,6 +5,7 @@ import Logo from "../components/Logo.astro";
 
 import Info from "../components/Info.astro";
 import FestivalSpirit from "../components/FestivalSpirit.svelte";
+import LoadingScreen from "../components/LoadingScreen.svelte";
 
 const seoData = {
     title: "Generazione Zero Workfest",
@@ -22,6 +23,7 @@ const seoData = {
     keywords={seoData.keywords}
     image={seoData.image}
 >
+    <LoadingScreen client:only="svelte" />
     <div class="relative">
         <FestivalSpirit client:load />
         <Info />
