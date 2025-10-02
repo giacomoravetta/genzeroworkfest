@@ -11,12 +11,29 @@
     let displayData = $state<ProgramSection[]>([]);
 
     $effect(() => {
-        if (data) {
+        console.log("🔍 ProgramSchedule - data received:", data);
+        console.log("🔍 Data type:", typeof data);
+        console.log("🔍 Is array:", Array.isArray(data));
+        console.log("🔍 Data length:", data?.length);
+
+        if (data && Array.isArray(data) && data.length > 0) {
             displayData = data;
             isLoading = false;
+            console.log("✅ Display data set:", displayData);
 
             // Notify that program data is loaded with a small delay
             // to ensure LoadingScreen is ready to listen
+            setTimeout(() => {
+                window.dispatchEvent(new CustomEvent("programDataLoaded"));
+            }, 100);
+        } else if (data !== undefined) {
+            // Data exists but is empty
+            console.warn("⚠️ Data is empty or not an array");
+            displayData = [];
+            isLoading = false;
+            error = "Nessun dato disponibile";
+
+            // Still dispatch event to not block loading screen
             setTimeout(() => {
                 window.dispatchEvent(new CustomEvent("programDataLoaded"));
             }, 100);
@@ -36,7 +53,10 @@
             class="bg-yellow-50 border-2 border-yellow-400 rounded-lg p-6 mb-8"
         >
             <p class="text-yellow-800">
-                ⚠️ Impossibile caricare i dati aggiornati. Errore: {error}
+                ⚠️ {error}
+            </p>
+            <p class="text-sm text-yellow-600 mt-2">
+                Data: {JSON.stringify(data)}
             </p>
         </div>
     {:else if isLoading}
@@ -50,17 +70,25 @@
         </div>
     {:else}
         <div class="flex flex-col gap-8 sm:gap-10 lg:gap-5">
-            {#each displayData as section}
-                <div class="flex w-full lg:basis-1/3 h-fit">
-                    <Island
-                        content={{
-                            title: section.title,
-                            description: section.description,
-                            events: section.events,
-                        }}
-                    />
+            {#if displayData.length === 0}
+                <div class="text-center py-12">
+                    <p class="text-gray-600 text-lg">
+                        Nessuna sezione programma disponibile
+                    </p>
                 </div>
-            {/each}
+            {:else}
+                {#each displayData as section}
+                    <div class="flex w-full lg:basis-1/3 h-fit">
+                        <Island
+                            content={{
+                                title: section.title,
+                                description: section.description,
+                                events: section.events,
+                            }}
+                        />
+                    </div>
+                {/each}
+            {/if}
         </div>
     {/if}
 </div>

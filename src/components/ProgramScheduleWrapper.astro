@@ -16,6 +16,13 @@ console.log("🗄️ Database ID available:", !!notionDatabaseId);
 
 // Fetch data server-side - pass as separate arguments
 const data = await getProgramData(notionApiKey, notionDatabaseId);
+
+console.log("📊 Fetched data:", data);
+console.log("📊 Data length:", data?.length);
+console.log("📊 Data is array:", Array.isArray(data));
+if (data && data.length > 0) {
+    console.log("📊 First section:", data[0]);
+}
 ---
 
 <section
