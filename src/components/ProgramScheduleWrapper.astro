@@ -5,30 +5,54 @@ import { getProgramData } from "../lib/notion";
 // Disable prerendering to get fresh data on each request
 export const prerender = false;
 
-// For Cloudflare Pages, environment variables are accessed via Astro.locals.runtime.env
-// They should be set in Cloudflare Pages dashboard under Settings > Environment variables
+// Get environment variables from Cloudflare runtime or local .env
+console.log("🔍 Astro.locals.runtime exists:", !!Astro.locals.runtime);
+console.log("🔍 Astro.locals.runtime.env exists:", !!Astro.locals.runtime?.env);
 
-// Try multiple ways to access environment variables
-let notionApiKey: string | undefined;
-let notionDatabaseId: string | undefined;
+const { env } = Astro.locals.runtime;
 
-// Method 1: Try Astro.locals.runtime.env (Cloudflare Workers/Pages)
-if (Astro.locals.runtime?.env) {
-    notionApiKey = Astro.locals.runtime.env.NOTION_API_KEY;
-    notionDatabaseId = Astro.locals.runtime.env.NOTION_DATABASE_ID;
+// Try all possible ways to access env variables
+const notionApiKeyFromRuntime = env?.NOTION_API_KEY;
+const notionApiKeyFromImportMeta = import.meta.env.NOTION_API_KEY;
+const notionDatabaseIdFromRuntime = env?.NOTION_DATABASE_ID;
+const notionDatabaseIdFromImportMeta = import.meta.env.NOTION_DATABASE_ID;
+
+console.log("🔑 API Key from runtime:", !!notionApiKeyFromRuntime);
+console.log("🔑 API Key from import.meta.env:", !!notionApiKeyFromImportMeta);
+console.log("🗄️ Database ID from runtime:", !!notionDatabaseIdFromRuntime);
+console.log(
+    "🗄️ Database ID from import.meta.env:",
+    !!notionDatabaseIdFromImportMeta,
+);
+
+const notionApiKey = notionApiKeyFromRuntime || notionApiKeyFromImportMeta;
+const notionDatabaseId =
+    notionDatabaseIdFromRuntime || notionDatabaseIdFromImportMeta;
+
+console.log("🔑 Final API Key available:", !!notionApiKey);
+console.log("🗄️ Final Database ID available:", !!notionDatabaseId);
+
+if (!notionApiKey || !notionDatabaseId) {
+    console.error("❌ Missing environment variables!");
+    console.error(
+        "Available env keys:",
+        env ? Object.keys(env) : "no env object",
+    );
+    console.error(
+        "Available import.meta.env keys:",
+        Object.keys(import.meta.env),
+    );
 }
 
-// Method 2: Fallback to import.meta.env for local development
-if (!notionApiKey) {
-    notionApiKey = import.meta.env.NOTION_API_KEY;
-    notionDatabaseId = import.meta.env.NOTION_DATABASE_ID;
-}
-
-// Fetch data server-side
+// Fetch data server-side - pass as separate arguments
 const data = await getProgramData(notionApiKey, notionDatabaseId);
 
-// Minimal debug to check data
-console.log("📊 Data fetched - length:", data?.length, "sections");
+console.log("📊 Fetched data:", data);
+console.log("📊 Data length:", data?.length);
+console.log("📊 Data is array:", Array.isArray(data));
+if (data && data.length > 0) {
+    console.log("📊 First section:", data[0]);
+}
 ---
 
 <section
