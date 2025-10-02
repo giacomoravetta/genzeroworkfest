@@ -11,6 +11,12 @@
     let displayData = $state<ProgramSection[]>([]);
 
     $effect(() => {
+        console.log(
+            "📊 ProgramSchedule received data:",
+            data?.length,
+            "sections",
+        );
+
         if (data && Array.isArray(data) && data.length > 0) {
             displayData = data;
             isLoading = false;

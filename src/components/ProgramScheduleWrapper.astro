@@ -26,6 +26,9 @@ if (!notionApiKey) {
 
 // Fetch data server-side
 const data = await getProgramData(notionApiKey, notionDatabaseId);
+
+// Minimal debug to check data
+console.log("📊 Data fetched - length:", data?.length, "sections");
 ---
 
 <section
