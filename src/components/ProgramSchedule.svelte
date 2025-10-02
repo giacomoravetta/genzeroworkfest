@@ -3,7 +3,7 @@
     import { getProgramData } from "../lib/notion";
     import Island from "./Island.svelte";
 
-    let { data } = $props();
+    let { data, notionApiKey, notionDatabaseId } = $props();
 
     // Local state for loading and error
     let isLoading = $state(true);
@@ -14,7 +14,8 @@
         if (data) {
             displayData = data;
             isLoading = false;
-
+            console.log("Notion Api Key:", notionApiKey);
+            console.log("Notion Database ID:", notionDatabaseId);
             console.log(data);
 
             // Notify that program data is loaded with a small delay

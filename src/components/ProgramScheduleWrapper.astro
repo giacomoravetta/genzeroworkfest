@@ -14,5 +14,10 @@ const data = await getProgramData(notionApiKey, notionDatabaseId);
 <section
     class="relative flex flex-col justify-center items-start w-full h-auto px-4 sm:px-6 lg:px-40 pt-8 sm:pt-12 lg:pt-16"
 >
-    <ProgramSchedule client:only="svelte" {data} />
 </section>
+<ProgramSchedule
+    client:only="svelte"
+    {data}
+    {notionApiKey}
+    {notionDatabaseId}
+/>
