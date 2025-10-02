@@ -2,23 +2,24 @@
 import ProgramSchedule from "./ProgramSchedule.svelte";
 import { getProgramData } from "../lib/notion";
 
-const { env } = Astro.locals.runtime;
-const notionApiKeyDev = import.meta.env.NOTION_API_KEY;
-const notionDatabaseIdDev = import.meta.env.NOTION_API_KEY;
+// Disable prerendering to get fresh data on each request
+export const prerender = false;
 
-const notionApiKey = env?.NOTION_API_KEY || notionApiKeyDev;
-const notionDatabaseId = env?.NOTION_DATABASE_ID || notionDatabaseIdDev;
+// Get environment variables from Cloudflare runtime or local .env
+const env = Astro.locals.runtime?.env;
+const notionApiKey = env?.NOTION_API_KEY || import.meta.env.NOTION_API_KEY;
+const notionDatabaseId =
+    env?.NOTION_DATABASE_ID || import.meta.env.NOTION_DATABASE_ID;
 
+console.log("🔑 API Key available:", !!notionApiKey);
+console.log("🗄️ Database ID available:", !!notionDatabaseId);
+
+// Fetch data server-side - pass as separate arguments
 const data = await getProgramData(notionApiKey, notionDatabaseId);
 ---
 
 <section
     class="relative flex flex-col justify-center items-start w-full h-auto px-4 sm:px-6 lg:px-40 pt-8 sm:pt-12 lg:pt-16"
 >
+    <ProgramSchedule client:only="svelte" {data} />
 </section>
-<ProgramSchedule
-    client:only="svelte"
-    {data}
-    {notionApiKey}
-    {notionDatabaseId}
-/>
