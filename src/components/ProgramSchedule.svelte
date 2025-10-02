@@ -11,15 +11,15 @@
     let displayData = $state<ProgramSection[]>([]);
 
     $effect(() => {
-        console.log(
-            "📊 ProgramSchedule received data:",
-            data?.length,
-            "sections",
-        );
+        console.log("🔍 ProgramSchedule - data received:", data);
+        console.log("🔍 Data type:", typeof data);
+        console.log("🔍 Is array:", Array.isArray(data));
+        console.log("🔍 Data length:", data?.length);
 
         if (data && Array.isArray(data) && data.length > 0) {
             displayData = data;
             isLoading = false;
+            console.log("✅ Display data set:", displayData);
 
             // Notify that program data is loaded with a small delay
             // to ensure LoadingScreen is ready to listen
@@ -28,6 +28,7 @@
             }, 100);
         } else if (data !== undefined) {
             // Data exists but is empty
+            console.warn("⚠️ Data is empty or not an array");
             displayData = [];
             isLoading = false;
             error = "Nessun dato disponibile";
@@ -53,6 +54,9 @@
         >
             <p class="text-yellow-800">
                 ⚠️ {error}
+            </p>
+            <p class="text-sm text-yellow-600 mt-2">
+                Data: {JSON.stringify(data)}
             </p>
         </div>
     {:else if isLoading}
