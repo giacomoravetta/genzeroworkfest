@@ -2,9 +2,6 @@
 import ProgramSchedule from "./ProgramSchedule.svelte";
 import { getProgramData } from "../lib/notion";
 
-// Disable prerendering to get fresh data on each request
-export const prerender = false;
-
 const notionApiKey =
     Astro.locals.runtime?.env?.NOTION_API_KEY || import.meta.env.NOTION_API_KEY;
 const notionDatabaseId =
