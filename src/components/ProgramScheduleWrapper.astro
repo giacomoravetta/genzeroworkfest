@@ -2,11 +2,12 @@
 import ProgramSchedule from "./ProgramSchedule.svelte";
 import { getProgramData } from "../lib/notion";
 
-const notionApiKey =
-    Astro.locals.runtime?.env?.NOTION_API_KEY || import.meta.env.NOTION_API_KEY;
-const notionDatabaseId =
-    Astro.locals.runtime?.env?.NOTION_DATABASE_ID ||
-    import.meta.env.NOTION_DATABASE_ID;
+const { env } = Astro.locals.runtime;
+const notionApiKeyDev = import.meta.env.NOTION_API_KEY;
+const notionDatabaseIdDev = import.meta.env.NOTION_API_KEY;
+
+const notionApiKey = env?.NOTION_API_KEY || notionApiKeyDev;
+const notionDatabaseId = env?.NOTION_DATABASE_ID || notionDatabaseIdDev;
 
 const data = await getProgramData(notionApiKey, notionDatabaseId);
 ---
