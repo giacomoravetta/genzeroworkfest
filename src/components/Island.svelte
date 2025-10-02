@@ -3,6 +3,9 @@
         time: string;
         title: string;
         description?: string;
+        tagline?: string;
+        booking?: boolean;
+        bookingLink?: string;
     }
 
     interface Content {
@@ -142,12 +145,29 @@
                                         {event.title}
                                     </h3>
                                 </div>
+                                {#if event.tagline}
+                                    <p
+                                        class="text-base sm:text-lg lg:text-xl text-black font-semibold leading-relaxed mb-2"
+                                    >
+                                        {event.tagline}
+                                    </p>
+                                {/if}
                                 {#if event.description}
                                     <p
                                         class="text-base sm:text-lg lg:text-xl text-black leading-relaxed"
                                     >
                                         {event.description}
                                     </p>
+                                {/if}
+                                {#if event.booking && event.bookingLink}
+                                    <a
+                                        href={event.bookingLink}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="inline-block mt-4 brutalist-btn bg-yellow-200 border-4 border-black text-black font-black text-sm sm:text-base px-4 py-2 uppercase tracking-wider transition-all duration-200 hover:bg-black hover:text-white active:scale-95 transform hover:scale-105 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                                    >
+                                        Prenota →
+                                    </a>
                                 {/if}
                             </div>
                         {/each}
