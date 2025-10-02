@@ -15,6 +15,8 @@
             displayData = data;
             isLoading = false;
 
+            console.log(data);
+
             // Notify that program data is loaded with a small delay
             // to ensure LoadingScreen is ready to listen
             setTimeout(() => {
