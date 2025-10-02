@@ -6,13 +6,43 @@ import { getProgramData } from "../lib/notion";
 export const prerender = false;
 
 // Get environment variables from Cloudflare runtime or local .env
-const env = Astro.locals.runtime?.env;
-const notionApiKey = env?.NOTION_API_KEY || import.meta.env.NOTION_API_KEY;
-const notionDatabaseId =
-    env?.NOTION_DATABASE_ID || import.meta.env.NOTION_DATABASE_ID;
+console.log("🔍 Astro.locals.runtime exists:", !!Astro.locals.runtime);
+console.log("🔍 Astro.locals.runtime.env exists:", !!Astro.locals.runtime?.env);
 
-console.log("🔑 API Key available:", !!notionApiKey);
-console.log("🗄️ Database ID available:", !!notionDatabaseId);
+const env = Astro.locals.runtime?.env;
+
+// Try all possible ways to access env variables
+const notionApiKeyFromRuntime = env?.NOTION_API_KEY;
+const notionApiKeyFromImportMeta = import.meta.env.NOTION_API_KEY;
+const notionDatabaseIdFromRuntime = env?.NOTION_DATABASE_ID;
+const notionDatabaseIdFromImportMeta = import.meta.env.NOTION_DATABASE_ID;
+
+console.log("🔑 API Key from runtime:", !!notionApiKeyFromRuntime);
+console.log("🔑 API Key from import.meta.env:", !!notionApiKeyFromImportMeta);
+console.log("🗄️ Database ID from runtime:", !!notionDatabaseIdFromRuntime);
+console.log(
+    "🗄️ Database ID from import.meta.env:",
+    !!notionDatabaseIdFromImportMeta,
+);
+
+const notionApiKey = notionApiKeyFromRuntime || notionApiKeyFromImportMeta;
+const notionDatabaseId =
+    notionDatabaseIdFromRuntime || notionDatabaseIdFromImportMeta;
+
+console.log("🔑 Final API Key available:", !!notionApiKey);
+console.log("🗄️ Final Database ID available:", !!notionDatabaseId);
+
+if (!notionApiKey || !notionDatabaseId) {
+    console.error("❌ Missing environment variables!");
+    console.error(
+        "Available env keys:",
+        env ? Object.keys(env) : "no env object",
+    );
+    console.error(
+        "Available import.meta.env keys:",
+        Object.keys(import.meta.env),
+    );
+}
 
 // Fetch data server-side - pass as separate arguments
 const data = await getProgramData(notionApiKey, notionDatabaseId);
