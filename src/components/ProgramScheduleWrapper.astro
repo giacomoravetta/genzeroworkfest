@@ -9,7 +9,7 @@ export const prerender = false;
 console.log("🔍 Astro.locals.runtime exists:", !!Astro.locals.runtime);
 console.log("🔍 Astro.locals.runtime.env exists:", !!Astro.locals.runtime?.env);
 
-const env = Astro.locals.runtime?.env;
+const { env } = Astro.locals.runtime;
 
 // Try all possible ways to access env variables
 const notionApiKeyFromRuntime = env?.NOTION_API_KEY;
