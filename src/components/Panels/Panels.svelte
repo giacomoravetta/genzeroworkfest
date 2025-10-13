@@ -68,7 +68,7 @@
             subtitle: "L'operazione della Global Sumud Flottila",
             description:
                 "Un racconto di coraggio e solidarietà dal mare. Scopriremo come la Global Sumud Flottila opera per portare aiuti umanitari e sensibilizzare la comunità internazionale. Testimonianze dirette di chi ha partecipato alle missioni, tra sfide, speranza e l'importanza della mobilitazione civile per i diritti umani.",
-            time: "17:45",
+            time: "18:00",
             speakers: [
                 {
                     name: "Paolo Romano",
