@@ -1,7 +1,8 @@
 ---
 import Logo from "./Logo.astro";
 import Footer from "./Footer.astro";
-import ProgramSchedule from "./ProgramSchedule.svelte";
+import Instagram from "./Instagram.astro";
+import Facebook from "./Facebook.astro";
 import Marquee from "./Marquee.svelte";
 import Panels from "./Panels/Panels.svelte";
 import Workshop from "./Workshop.svelte";
@@ -19,17 +20,24 @@ import Evening from "./Evening.svelte";
             <div class="mb-4 pb-4 border-b border-gray-100">
                 <h3 class="text-lg font-bold text-gray-800">Menu</h3>
             </div>
-            <a
-                href="#program"
-                class="mobile-nav-link font-sans font-medium text-gray-800 hover:text-black transition-all duration-300 py-3 px-4 rounded-md hover:bg-gray-100 border-l-4 border-transparent hover:border-black"
-                >Programma</a
-            >
-
-            <a
-                href="#contatti"
-                class="mobile-nav-link font-sans font-medium text-gray-800 hover:text-black transition-all duration-300 py-3 px-4 rounded-md hover:bg-gray-100 border-l-4 border-transparent hover:border-black"
-                >Contatti</a
-            >
+            <div class="flex items-center gap-2 justify-center">
+                <a
+                    href="https://www.facebook.com/profile.php?id=61566825514003"
+                    target="_blank"
+                    class="mobile-nav-link social-icon-btn"
+                    title="Facebook"
+                >
+                    <Facebook />
+                </a>
+                <a
+                    href="https://www.instagram.com/genzeroworkfest/"
+                    target="_blank"
+                    class="mobile-nav-link social-icon-btn"
+                    title="Instagram"
+                >
+                    <Instagram />
+                </a>
+            </div>
 
             <!-- Mobile Event Info -->
             <div class="mt-6 pt-4 border-t border-gray-100 text-center">
@@ -77,17 +85,23 @@ import Evening from "./Evening.svelte";
             </div>
 
             <!-- Navigation -->
-            <nav class="flex items-center gap-6 xl:gap-8">
+            <nav class="flex items-center gap-3 xl:gap-4">
                 <a
-                    href="#program"
-                    class="nav-link relative font-sans font-medium text-black transition-all duration-200 origin-center hover:scale-105"
-                    >Programma</a
+                    href="https://www.facebook.com/profile.php?id=61566825514003"
+                    target="_blank"
+                    class="social-icon-btn"
+                    title="Facebook"
                 >
+                    <Facebook />
+                </a>
                 <a
-                    href="#contatti"
-                    class="nav-link relative font-sans font-medium text-black transition-all duration-200 origin-center hover:scale-105"
-                    >Contatti</a
+                    href="https://www.instagram.com/genzeroworkfest/"
+                    target="_blank"
+                    class="social-icon-btn"
+                    title="Instagram"
                 >
+                    <Instagram />
+                </a>
             </nav>
 
             <!-- Event Info -->
@@ -146,7 +160,7 @@ import Evening from "./Evening.svelte";
                 <div
                     class="flex items-center justify-between w-full text-xs sm:text-sm"
                 >
-                    <div class="flex flex-col justify-leftitems-center">
+                    <div class="flex flex-col justify-left items-start">
                         <span class="font-bold text-black">18 Ottobre 2025</span
                         >
 
@@ -433,6 +447,26 @@ import Evening from "./Evening.svelte";
             });
         }
 
+        // Social icon button hover animations
+        const socialIconBtns = document.querySelectorAll(".social-icon-btn");
+        socialIconBtns.forEach((btn) => {
+            btn.addEventListener("mouseenter", function () {
+                gsap.to(btn.querySelector("svg"), {
+                    scale: 1.08,
+                    duration: 0.25,
+                    ease: "power2.out",
+                });
+            });
+
+            btn.addEventListener("mouseleave", function () {
+                gsap.to(btn.querySelector("svg"), {
+                    scale: 1,
+                    duration: 0.25,
+                    ease: "power2.out",
+                });
+            });
+        });
+
         // Share button functionality
         const shareButton = document.querySelector(".share-button");
         const shareBtn = document.getElementById("shareBtn");
@@ -576,6 +610,32 @@ import Evening from "./Evening.svelte";
         height: 100%;
         width: auto;
         max-width: 100%;
+    }
+
+    .social-icon-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        padding: 0;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .social-icon-btn:not(.mobile-nav-link) {
+        background-color: transparent;
+    }
+
+    .social-icon-btn:not(.mobile-nav-link):hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .social-icon-btn svg {
+        width: 18px;
+        height: 18px;
+        will-change: transform;
     }
 
     .share-button {
