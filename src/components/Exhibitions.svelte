@@ -33,7 +33,7 @@
 </script>
 
 <section class="w-full px-4 py-8 md:px-6 md:py-12 lg:px-8">
-    <div class="max-w-7xl mx-auto">
+    <div class="w-full mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-6">
             {#each exhibitions as exhibition}
                 <div
