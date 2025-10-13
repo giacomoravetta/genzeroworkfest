@@ -72,7 +72,7 @@
             speakers: [
                 {
                     name: "Paolo Romano",
-                    role: "Coordinatore Global Sumud Flottila",
+                    role: "Attivista Global Sumud Flottila",
                     image: "/Paolo_Romano.jpg",
                 },
                 {
