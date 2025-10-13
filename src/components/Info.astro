@@ -1,8 +1,12 @@
 ---
 import Logo from "./Logo.astro";
 import Footer from "./Footer.astro";
-import ProgramScheduleWrapper from "./ProgramScheduleWrapper.astro";
+import ProgramSchedule from "./ProgramSchedule.svelte";
 import Marquee from "./Marquee.svelte";
+import Panels from "./Panels/Panels.svelte";
+import Workshop from "./Workshop.svelte";
+import Exhibitions from "./Exhibitions.svelte";
+import Evening from "./Evening.svelte";
 ---
 
 <div
@@ -194,13 +198,15 @@ import Marquee from "./Marquee.svelte";
     <Marquee client:only="svelte" />
 
     <!-- Main Content -->
-    <main
-        class="w-full h-full flex flex-col gap-8 sm:gap-12 lg:gap-16 overflow-y-scroll"
-    >
-        <ProgramScheduleWrapper />
-
-        <Footer />
-    </main>
+    <div class="overflow-y-scroll w-full">
+        <main class="w-full h-full flex flex-col gap-8 sm:gap-12 lg:gap-16 p-8">
+            <Panels client:only="svelte" />
+            <Workshop client:only="svelte" />
+            <Exhibitions client:only="svelte" />
+            <Evening client:only="svelte" />
+            <Footer />
+        </main>
+    </div>
 
     <!-- Share Button -->
     <div

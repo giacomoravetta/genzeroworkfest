@@ -33,7 +33,7 @@
 </script>
 
 <div
-    class="relative w-full h-15 sm:h-12 md:h-15 z-30 border-t-2 border-b-2 border-black overflow-hidden flex items-center shadow-md"
+    class="relative w-full h-[50%] z-30 border-t-2 border-b-2 border-black overflow-hidden flex items-center shadow-md"
 >
     <div
         bind:this={marqueeRef}

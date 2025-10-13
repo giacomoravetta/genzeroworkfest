@@ -1,6 +1,4 @@
 <script lang="ts">
-    import { onMount } from "svelte";
-    import { getProgramData } from "../lib/notion";
     import Island from "./Island.svelte";
 
     let { data } = $props();
@@ -81,9 +79,7 @@
                     <div class="flex w-full lg:basis-1/3 h-fit">
                         <Island
                             content={{
-                                title: section.title,
-                                description: section.description,
-                                events: section.events,
+                                title: section[0],
                             }}
                         />
                     </div>

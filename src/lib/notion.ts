@@ -1,300 +1,173 @@
-// Utility per fetchare dati da Notion usando l'API versione 2025-09-03
-// Questa versione supporta i nuovi "data sources"
+/**
+ * Updated Notion API integration using 2025-09-03 version
+ * Key changes:
+ * - Uses data source IDs for queries instead of database IDs
+ * - Updates Notion-Version header to 2025-09-03
+ * - Follows new /v1/data_sources endpoint pattern
+ */
 
-interface Env {
-  NOTION_API_KEY?: string;
-  NOTION_DATABASE_ID?: string;
+interface NotionPage {
+  id: string;
+  properties: Record<string, any>;
+  [key: string]: any;
 }
 
-export interface Event {
-  time: string;
-  title: string;
-  description: string;
-  tagline?: string;
-  credits?: string;
-  booking?: boolean;
-  bookingLink?: string;
-  section?: string;
-  guests?: string;
-  type?: string;
+interface ProgramData {
+  [key: string]: any;
 }
 
-export interface ProgramSection {
-  title: string;
-  description: string;
-  events: Event[];
-}
-
-// Funzione per estrarre testo da rich text di Notion
-function extractText(richText: any): string {
-  if (!richText) return "";
-  if (Array.isArray(richText)) {
-    return richText.map((text: any) => text.plain_text || "").join("");
-  }
-  return "";
-}
-
-// Funzione per pulire l'ID del database (rimuove parametri query come ?v=...)
-function cleanDatabaseId(id: string): string {
-  // Rimuovi tutto dopo ? (parametri query)
-  const cleanId = id.split("?")[0].trim();
-  // Rimuovi trattini se presenti
-  return cleanId.replace(/-/g, "");
-}
-
-// Funzione per fetchare i dati del programma da Notion
-export async function getProgramData(
-  notionApiKey,
-  notionDatabaseId,
-): Promise<ProgramSection[]> {
+/**
+ * Query a Notion data source using the new 2025-09-03 API
+ * @param apiKey - Notion API key
+ * @param databaseId - Database ID (used to get data source if needed)
+ * @param dataSourceId - Data source ID (the new way to query)
+ * @param filter - Optional Notion filter object
+ * @param sorts - Optional sort configuration
+ */
+export async function queryDataSource(
+  apiKey: string,
+  databaseId: string,
+  dataSourceId: string,
+  filter?: any,
+  sorts?: any,
+): Promise<NotionPage[]> {
   try {
-    const apiKey = notionApiKey;
-    let databaseId = notionDatabaseId;
+    const body: any = {};
 
-    if (!apiKey || !databaseId) {
-      console.warn(
-        "Notion non configurato (NOTION_API_KEY o NOTION_DATABASE_ID mancanti), uso dati di fallback",
-      );
-      return [];
+    if (filter) {
+      body.filter = filter;
     }
 
-    // Pulisci l'ID del database da eventuali parametri query
-    databaseId = cleanDatabaseId(databaseId);
-    console.log("🔍 Database ID pulito:", databaseId);
-
-    // Step 1: Recupera il database per ottenere i data sources
-    const databaseResponse = await fetch(
-      `https://api.notion.com/v1/databases/${databaseId}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          "Notion-Version": "2025-09-03",
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-      },
-    );
-
-    if (!databaseResponse.ok) {
-      const errorData = await databaseResponse.json();
-      console.error("❌ Errore nel recupero database:", errorData);
-      return [];
+    if (sorts) {
+      body.sorts = sorts;
     }
 
-    const database = await databaseResponse.json();
-
-    // Step 2: Ottieni il primo data source (per database classici ce n'è solo uno)
-    const dataSources = database.data_sources || [];
-
-    if (dataSources.length === 0) {
-      console.error("❌ Nessun data source trovato nel database");
-      return [];
-    }
-
-    const dataSourceId = dataSources[0].id;
-    console.log("✅ Data source ID:", dataSourceId);
-
-    // Step 3: Query del data source per ottenere i record
-    const queryResponse = await fetch(
+    // Use the new /v1/data_sources endpoint with POST for querying
+    const response = await fetch(
       `https://api.notion.com/v1/data_sources/${dataSourceId}/query`,
       {
         method: "POST",
         headers: {
           Authorization: `Bearer ${apiKey}`,
-          "Notion-Version": "2025-09-03",
           "Content-Type": "application/json",
+          "Notion-Version": "2025-09-03",
         },
-        body: JSON.stringify({
-          sorts: [
-            {
-              property: "Time",
-              direction: "ascending",
-            },
-          ],
-        }),
-        cache: "no-store",
+        body: JSON.stringify(body),
       },
     );
 
-    if (!queryResponse.ok) {
-      const errorData = await queryResponse.json();
-      console.error("❌ Errore nella query del data source:", errorData);
-      return [];
+    if (!response.ok) {
+      const error = await response.json();
+      console.error("Notion API error:", error);
+      throw new Error(`Failed to query data source: ${response.statusText}`);
     }
 
-    const data = await queryResponse.json();
-    console.log("✅ Record trovati:", data.results?.length || 0);
-
-    // Mappa per raggruppare eventi per sezione
-    const sectionsMap = new Map<string, Event[]>();
-
-    for (const page of data.results) {
-      if (!page.properties) continue;
-
-      const properties = page.properties;
-
-      // Estrai le proprietà dell'evento
-      const name =
-        properties.Name?.type === "title"
-          ? extractText(properties.Name.title)
-          : "";
-
-      const tagline =
-        properties.Tagline?.type === "rich_text"
-          ? extractText(properties.Tagline.rich_text)
-          : "";
-
-      const description =
-        properties.Description?.type === "rich_text"
-          ? extractText(properties.Description.rich_text)
-          : "";
-
-      const time =
-        properties.Time?.type === "rich_text"
-          ? extractText(properties.Time.rich_text)
-          : "";
-
-      const credits =
-        properties.Credits?.type === "rich_text"
-          ? extractText(properties.Credits.rich_text)
-          : "";
-
-      const booking =
-        properties.Booking?.type === "checkbox"
-          ? properties.Booking.checkbox === true
-          : false;
-
-      const bookingLink =
-        properties.BookingLink?.type === "url"
-          ? properties.BookingLink.url || ""
-          : "";
-
-      const guests =
-        properties.Guests?.type === "rich_text"
-          ? extractText(properties.Guests.rich_text)
-          : "";
-
-      const eventType =
-        properties.Type?.type === "select"
-          ? properties.Type.select?.name || ""
-          : "";
-
-      // Determina la sezione
-      let section = "Mattina"; // default
-
-      // Se esiste una colonna Section nel database, usala
-      if (properties.Section?.type === "select") {
-        const sectionValue = properties.Section.select?.name || "";
-
-        // Mappa i valori inglesi ai valori italiani
-        if (sectionValue === "Morning") {
-          section = "Mattina";
-        } else if (sectionValue === "Afternoon") {
-          section = "Pomeriggio";
-        } else if (sectionValue === "Night") {
-          section = "Sera";
-        } else if (sectionValue === "All Day") {
-          section = "Tutto il giorno";
-        } else {
-          section = sectionValue || "Mattina";
-        }
-      } else {
-        // Altrimenti, determina la sezione dall'orario
-        const timeStr = time.toLowerCase();
-        if (
-          timeStr.includes("pomeriggio") ||
-          timeStr.startsWith("14") ||
-          timeStr.startsWith("15") ||
-          timeStr.startsWith("16") ||
-          timeStr.startsWith("17") ||
-          timeStr.startsWith("18")
-        ) {
-          section = "Pomeriggio";
-        } else if (
-          timeStr.includes("sera") ||
-          timeStr.includes("serata") ||
-          timeStr.startsWith("19") ||
-          timeStr.startsWith("20") ||
-          timeStr.startsWith("21") ||
-          timeStr.startsWith("22") ||
-          timeStr.startsWith("23")
-        ) {
-          section = "Sera";
-        }
-      }
-
-      // Crea l'oggetto evento
-      const event: Event = {
-        time,
-        title: name,
-        description: description || tagline,
-        tagline,
-        credits,
-        booking,
-        bookingLink,
-        section: properties.Section?.select?.name || undefined,
-        guests,
-        type: eventType,
-      };
-
-      // Aggiungi l'evento alla sezione corrispondente
-      if (!sectionsMap.has(section)) {
-        sectionsMap.set(section, []);
-      }
-      sectionsMap.get(section)!.push(event);
-    }
-
-    // Converti la mappa in array di sezioni
-    const sections: ProgramSection[] = [];
-
-    // Definisci l'ordine e le descrizioni delle sezioni
-    const sectionConfig = [
-      {
-        title: "Mattina",
-        description:
-          "Vogliamo sfidare questa società che ci vuole solo produttori. Tra giochi, creatività e socializzazione, ci prendiamo il tempo di essere umani: non macchine, non numeri, non ingranaggi. Riprendiamoci il nostro tempo.",
-      },
-      {
-        title: "Pomeriggio",
-        description:
-          "Il momento perfetto per workshop intensivi, sessioni collaborative e networking attivo. Energia e focus per portare avanti progetti concreti.",
-      },
-      {
-        title: "Sera",
-        description:
-          "Finiamo la giornata come meglio sappiamo fare: mangiando, bevendo e ballando insieme.",
-      },
-      {
-        title: "Tutto il giorno",
-        description:
-          "Eventi e attività che si svolgono durante tutta la giornata.",
-      },
-    ];
-
-    for (const config of sectionConfig) {
-      const events = sectionsMap.get(config.title) || [];
-      if (events.length > 0) {
-        sections.push({
-          title: config.title,
-          description: config.description,
-          events,
-        });
-      }
-    }
-
-    console.log("📊 Sezioni create:", sections.length);
-    sections.forEach((s) =>
-      console.log(`  - ${s.title}: ${s.events.length} eventi`),
-    );
-
-    return sections;
+    const data = await response.json();
+    return data.results || [];
   } catch (error) {
-    console.error("❌ Errore nel fetch dei dati da Notion:", error);
-    if (error instanceof Error) {
-      console.error("   Messaggio:", error.message);
-      console.error("   Stack:", error.stack);
+    console.error("Error querying data source:", error);
+    throw error;
+  }
+}
+
+/**
+ * Get data source information
+ * @param apiKey - Notion API key
+ * @param dataSourceId - Data source ID
+ */
+export async function getDataSourceInfo(apiKey: string, dataSourceId: string) {
+  try {
+    const response = await fetch(
+      `https://api.notion.com/v1/data_sources/${dataSourceId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Notion-Version": "2025-09-03",
+        },
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch data source info: ${response.statusText}`,
+      );
     }
-    return [];
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching data source info:", error);
+    throw error;
+  }
+}
+
+/**
+ * Get database with its data sources
+ * @param apiKey - Notion API key
+ * @param databaseId - Database ID
+ */
+export async function getDatabaseWithDataSources(
+  apiKey: string,
+  databaseId: string,
+) {
+  try {
+    const response = await fetch(
+      `https://api.notion.com/v1/databases/${databaseId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Notion-Version": "2025-09-03",
+        },
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch database: ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching database:", error);
+    throw error;
+  }
+}
+
+/**
+ * Main function to get program data - updated for new API
+ * @param apiKey - Notion API key
+ * @param databaseId - Database ID
+ * @param dataSourceId - Data source ID
+ */
+export async function getProgramData(
+  apiKey: string,
+  databaseId: string,
+  dataSourceId: string,
+): Promise<ProgramData[]> {
+  if (!apiKey) {
+    throw new Error("Notion API key is required");
+  }
+
+  if (!databaseId) {
+    throw new Error("Database ID is required");
+  }
+
+  if (!dataSourceId) {
+    throw new Error("Data source ID is required");
+  }
+
+  try {
+    // Query the data source with any necessary filters or sorts
+    const pages = await queryDataSource(apiKey, databaseId, dataSourceId);
+
+    // Transform the pages into your program data format
+    const programData: ProgramData[] = pages.map((page) => ({
+      id: page.id,
+      properties: page.properties,
+      // Add any additional transformations as needed
+    }));
+
+    return programData;
+  } catch (error) {
+    console.error("Error getting program data:", error);
+    throw error;
   }
 }
