@@ -94,7 +94,8 @@
             description:
                 "Destinazione utopia YEP, la comunità di giovani volontari under 30 di EMERGENCY, ti invita a prendere parte a un viaggio. Per farlo non serve un biglietto, basta chiudere gli occhi, fermare l\’orologio una manciata di istanti e fare un salto in una pagina bianca con una valigia vuota! È così che immaginiamo lo stand di EMERGENCY al Generazione Zero Workfest festival 2025, un viaggio da intraprendere insieme, dentro se stessi per riuscire a comprendere l’altro, tra domande empatia ed immaginazione",
             time: "10:00 - 12:30",
-            bookingRequired: false,
+            bookingRequired: true,
+            bookingLink: "https://tally.so/r/wQ6BYY",
         },
         {
             id: 7,
