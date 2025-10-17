@@ -64,10 +64,11 @@
         },
         {
             id: 3,
-            title: "IL MARE DI GAZA",
+            title: "Onde di Resistenza",
             subtitle: "L'operazione della Global Sumud Flottila",
             description:
-                "Un racconto di coraggio e solidarietà dal mare. Scopriremo come la Global Sumud Flottila opera per portare aiuti umanitari e sensibilizzare la comunità internazionale. Testimonianze dirette di chi ha partecipato alle missioni, tra sfide, speranza e l'importanza della mobilitazione civile per i diritti umani.",
+                "Insieme ai due attivisti della Global Sumud Flotilla, ascolteremo la loro testimonianza diretta di solidarietà e azione nonviolenta per rompere l'assedio e portare aiuti umanitari a Gaza. Attraverso le loro esperienze ci confronteremo su dignità umana, pace e resistenza civile, riflettendo su come l’impegno di chi si mette in gioco possa fare la differenza.",
+
             time: "18:00",
             speakers: [
                 {
